@@ -6,13 +6,13 @@
 | **Package / model** | `HOGApplication`, layer usr, publisher *AlfaPeople Switzerland* |
 | **Why one shared package** | Microsoft: start with few packages (one platform, one application package) and split only for a different release cadence ([Development and continuous delivery FAQ](https://learn.microsoft.com/dynamics365/fin-ops-core/dev-itpro/dev-tools/continuous-delivery-faq)). Decided 23.11.2026. |
 | **Dev environment** | VHD dev VM `dvhd10049vm` (10.0.49) |
-| **Status** | 24.11.2026: `HOGpma` and `HOGsba` merged, model compiles (xppc 0 errors, xppbp 0 errors / 36 warnings). DB sync and functional test open. |
+| **Status** | 24.11.2026: `HOGpma` and `HOGsba` merged, forms, menu and security added; xppc 0 errors, xppbp 0 errors / 0 warnings. DB sync and functional test of the new forms open. |
 
 ## Solutions in this package
 
 | Prefix | Solution | Docs | Status |
 |---|---|---|---|
-| `HOGpma` | Indirect cost matrix (employment category × cost center → indirect component group) | d365-pma-indirectCostAssignment, `HOGIndirectCostAssignment-Spike.md` section H | Compiles; forms, security, tests open |
+| `HOGpma` | Indirect cost matrix (employment category × cost center → indirect component group) | d365-pma-indirectCostAssignment, `HOGIndirectCostAssignment-Spike.md` section H | Compiles, BP clean; DB sync, UI test, data entities, tests open |
 | `HOGsba` | Activity number on Subscription billing schedule lines | d365-sba-activities | Moved here 24.11.2026 from package `HOGsbaSubBillActivity` (same element and field names, data kept) |
 
 ## Elements (`HOGpma`)
@@ -33,6 +33,26 @@
 | Class (CoC) | `PSAComponentGroupAssignment_HOGpma_Extension` | Wraps `findAssignment`: resource rules → matrix → standard |
 | Class (CoC) | `ProjJournalCheckPost_HOGpma_Extension` | Wraps `postTransLedger`: optional refresh during posting |
 | Form extension | `ProjParameters.HOGpma` | Group *Indirect cost matrix* at the end of the *Journals* tab |
+| Form extension | `BenefitEmploymentCategory.HOGpma` | Column *Employment category group* on *Human resources › Setup › Employment categories* |
+| Form + menu item | `HOGpmaIndirectCostMatrix` | The matrix. Relation fields are editable only for *Table* / *Group*; cost center lookup on the cost center dimension |
+| Form + menu item | `HOGpmaCostCenterGroup` | Cost center groups, button *Cost centers* opens the assignments of the selected group |
+| Form + menu item | `HOGpmaCostCenterGroupMember` | Cost center → group assignments (all, or filtered from a group) |
+| Form + menu item | `HOGpmaEmploymentCategoryGroup` | Employment category groups |
+| Menu extension | `ProjectManagementAndAccounting.HOGpma` | The four menu items under *Setup › Indirect costs*, after *Indirect cost assignment rules* |
+| Privilege | `HOGpmaIndirectCostMatrixMaintain`, `HOGpmaIndirectCostMatrixView` | Maintain / view the four forms |
+| Duty extension | `ProjProjectMasterMaintain`, `ProjProjectContractMasterMaintain`, `ProjProjectAccountingProcessEnable` (maintain); `ProjProjectMasterInquire` (view) | The same duties that hold the standard indirect cost privileges |
+
+## Elements (`HOGsba`)
+
+| Type | Element | Purpose |
+|---|---|---|
+| Table extension | `SubBillScheduleLine.HOGsba`, `SubBillSalesLineConsolidated.HOGsba` | Activity number |
+| Form extension | `SubBillScheduleTable.HOGsba` | Activity number on billing schedule lines |
+| Class | `SubBillScheduleLine_HOGsba_Extension`, `HOGsbaSubBillScheduleTableEventHandler` | Validation, lookup, copy to the sales line |
+
+## Build from the command line
+
+`xppc`/`xppbp` as in d365-sba-activities doc 06 §5.1, with `$model = 'HOGApplication'`. Labels first: `LabelC.exe -metadata=$pld -output=$pld\HOGApplication -modelmodule=HOGApplication` (output is the **package folder**; LabelC adds `Resources`). Hand-written XML: run `tools/Repair-AxXmlOrder.ps1 -Path Metadata\HOGApplication\HOGApplication -WhatIf` before building. The metadata deserializer silently ignores elements that are out of order.
 
 ## Set up the package on a dev VM
 
@@ -58,12 +78,9 @@ Get-Service -Name W3SVC, DynamicsAxBatch -ErrorAction SilentlyContinue | Start-S
 
 | Item | Note |
 |---|---|
-| DB sync, functional test | Sync from Visual Studio (`Projects/HOGApplication/HOGApplication.sln`); retest the `HOGsba` activity number |
-| BP warnings (36) | Form refs (come with the forms), primary key editable/mandatory on matrix and member tables, TitleField1 and replacement key on group tables, DeleteAction relation; *Unknown label* / *strFmt* warnings to recheck after a Visual Studio build |
-| Forms and menu items | Matrix, cost center groups (with members), employment category groups; menu extension under *Project management and accounting › Setup › Indirect costs* |
-| `BenefitEmploymentCategory` form extension | Shows the employment category group on *Human resources › Setup › Employment categories* |
-| Security | Privileges (view/maintain) for the new forms, added to the project setup duty |
+| DB sync, functional test | Sync from Visual Studio (`Projects/HOGApplication/HOGApplication.sln`): new `RecIdx` indexes, corrected employment category group table. Then test the four forms, the menu, the lookups and the *Employment categories* column |
+| **Decision:** employment category key | `BenefitEmploymentCategory` is unique on *employment type + category*, the matrix stores the category only. If a category code exists under two employment types, a *Table* line matches both. Either confirm codes are unique at Honegger, or add the employment type to the matrix |
+| HR users and the category group lookup | The column on *Employment categories* looks up `HOGpmaEmploymentCategoryGroup`; HR roles without a project duty may need read access. Test with an HR-only user |
 | Data entities | Matrix and groups, for Excel/DMF import |
-| Cost center validation | Matrix lines with cost center code *Table* are not yet checked against the dimension values (`VERIFY` in `HOGpmaIndirectCostMatrix.checkRelationExists`) |
 | Test package `HOGApplicationTest` | SysTest for `HOGpmaIndirectCostMatrixLookup::findGroup` (search order) and the `findAssignment` precedence |
 | `HGExtension` overlap | Honegger's own model isn't on the VM; check whether it wraps `findAssignment` or `postTransLedger` |

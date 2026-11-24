@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxMenuItemDisplay xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="Microsoft.Dynamics.AX.Metadata.V1">
+	<Name>HOGpmaCostCenterGroup</Name>
+	<ConfigurationKey>Project</ConfigurationKey>
+	<DisabledResource>0</DisabledResource>
+	<HelpText>@HOGpma:CostCenterGroupsHelp</HelpText>
+	<Label>@HOGpma:CostCenterGroups</Label>
+	<MaintainUserLicense>Activity</MaintainUserLicense>
+	<NormalResource>0</NormalResource>
+	<Object>HOGpmaCostCenterGroup</Object>
+	<ViewUserLicense>Universal</ViewUserLicense>
+</AxMenuItemDisplay>

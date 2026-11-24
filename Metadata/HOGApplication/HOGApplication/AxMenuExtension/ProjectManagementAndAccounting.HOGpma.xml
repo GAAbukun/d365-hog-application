@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxMenuExtension xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="Microsoft.Dynamics.AX.Metadata.V1">
+	<Name>ProjectManagementAndAccounting.HOGpma</Name>
+	<Customizations />
+	<Elements>
+		<AxMenuExtensionElement xmlns="">
+			<Parent>IndirectComponent</Parent>
+			<PositionType>AfterItem</PositionType>
+			<PreviousSibling>PSAComponentGroupAssignment</PreviousSibling>
+			<MenuElement xmlns=""
+				i:type="AxMenuElementMenuItem">
+				<Name>HOGpmaIndirectCostMatrix</Name>
+				<MenuItemName>HOGpmaIndirectCostMatrix</MenuItemName>
+			</MenuElement>
+		</AxMenuExtensionElement>
+		<AxMenuExtensionElement xmlns="">
+			<Parent>IndirectComponent</Parent>
+			<PositionType>AfterItem</PositionType>
+			<PreviousSibling>HOGpmaIndirectCostMatrix</PreviousSibling>
+			<MenuElement xmlns=""
+				i:type="AxMenuElementMenuItem">
+				<Name>HOGpmaCostCenterGroup</Name>
+				<MenuItemName>HOGpmaCostCenterGroup</MenuItemName>
+			</MenuElement>
+		</AxMenuExtensionElement>
+		<AxMenuExtensionElement xmlns="">
+			<Parent>IndirectComponent</Parent>
+			<PositionType>AfterItem</PositionType>
+			<PreviousSibling>HOGpmaCostCenterGroup</PreviousSibling>
+			<MenuElement xmlns=""
+				i:type="AxMenuElementMenuItem">
+				<Name>HOGpmaCostCenterGroupMember</Name>
+				<MenuItemName>HOGpmaCostCenterGroupMember</MenuItemName>
+			</MenuElement>
+		</AxMenuExtensionElement>
+		<AxMenuExtensionElement xmlns="">
+			<Parent>IndirectComponent</Parent>
+			<PositionType>AfterItem</PositionType>
+			<PreviousSibling>HOGpmaCostCenterGroupMember</PreviousSibling>
+			<MenuElement xmlns=""
+				i:type="AxMenuElementMenuItem">
+				<Name>HOGpmaEmploymentCategoryGroup</Name>
+				<MenuItemName>HOGpmaEmploymentCategoryGroup</MenuItemName>
+			</MenuElement>
+		</AxMenuExtensionElement>
+	</Elements>
+</AxMenuExtension>

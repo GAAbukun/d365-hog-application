@@ -10,10 +10,18 @@ CostCenterGroupDevDoc=The HOGpmaCostCenterGroup table contains groups of cost ce
 CostCenterGroupMember=Cost center group assignment
 CostCenterGroupMemberDevDoc=The HOGpmaCostCenterGroupMember table assigns a cost center to one cost center group.
  ;{locked} Table developer documentation
+CostCenterGroupMembers=Cost center group assignments
+ ;Form caption and menu item
+CostCenterGroupMembersHelp=Assign cost centers to cost center groups.
+ ;Menu item help
 CostCenterGroups=Cost center groups
+CostCenterGroupsHelp=Set up groups of cost centers for the indirect cost matrix.
+ ;Menu item help
 CostCenterRelation=Cost center relation
  ;Cost center value or cost center group, depending on the cost center code
 CostCenterRelationHelp=The cost center or the cost center group, depending on the cost center code. Empty when the code is All.
+CostCenters=Cost centers
+ ;Button on cost center groups
 EmploymentCategoryCode=Employment category code
  ;Table, group or all employment categories
 EmploymentCategoryCodeHelp=Select whether the line applies to one employment category, an employment category group or all employment categories.
@@ -21,9 +29,13 @@ EmploymentCategoryGroup=Employment category group
 EmploymentCategoryGroupDevDoc=The HOGpmaEmploymentCategoryGroup table contains groups of employment categories for the indirect cost matrix.
  ;{locked} Table developer documentation
 EmploymentCategoryGroups=Employment category groups
+EmploymentCategoryGroupsHelp=Set up groups of employment categories for the indirect cost matrix.
+ ;Menu item help
 EmploymentCategoryRelation=Employment category relation
  ;Employment category or employment category group, depending on the employment category code
 EmploymentCategoryRelationHelp=The employment category or the employment category group, depending on the employment category code. Empty when the code is All.
+ErrCostCenterDimensionMissing=Set up the cost center dimension in the project management and accounting parameters first.
+ ;Cost center dimension parameter is empty
 ErrGroupInUse=Group %1 is used in the indirect cost matrix and can't be deleted.
  ;%1 = group ID
 ErrRelationNotAllowed=%1 must be empty when %2 is All.
@@ -36,8 +48,14 @@ IndirectCostMatrix=Indirect cost matrix
  ;Matrix of employment category and cost center that selects the indirect component group
 IndirectCostMatrixDevDoc=The HOGpmaIndirectCostMatrix table selects the indirect component group of an hour line from the worker's employment category and cost center.
  ;{locked} Table developer documentation
+IndirectCostMatrixHelp=Set up which indirect component group applies to an employment category and cost center.
+ ;Menu item help
 InfoGroupChangedOnPosting=Line %1: indirect component group changed from %2 to %3 during posting.
  ;%1 = journal line number, %2 = old group, %3 = new group
+PrivMaintain=Maintain indirect cost matrix
+ ;Security privilege
+PrivView=View indirect cost matrix
+ ;Security privilege
 RefreshOnPosting=Look up indirect component group again when posting
  ;Parameter checkbox
 RefreshOnPostingHelp=Look up the indirect component group of each hour journal line again when the journal is posted, so that changes to the worker's employment since the line was saved are taken into account.

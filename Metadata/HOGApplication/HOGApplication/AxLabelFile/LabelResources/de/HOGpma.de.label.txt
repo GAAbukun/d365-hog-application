@@ -10,10 +10,18 @@ CostCenterGroupDevDoc=The HOGpmaCostCenterGroup table contains groups of cost ce
 CostCenterGroupMember=Zuordnung Kostenstellengruppe
 CostCenterGroupMemberDevDoc=The HOGpmaCostCenterGroupMember table assigns a cost center to one cost center group.
  ;{locked} Table developer documentation
+CostCenterGroupMembers=Zuordnungen Kostenstellengruppen
+ ;Form caption and menu item
+CostCenterGroupMembersHelp=Ordnen Sie Kostenstellen den Kostenstellengruppen zu.
+ ;Menu item help
 CostCenterGroups=Kostenstellengruppen
+CostCenterGroupsHelp=Richten Sie Gruppen von Kostenstellen fÃ¼r die Matrix fÃ¼r indirekte Kosten ein.
+ ;Menu item help
 CostCenterRelation=Kostenstellenrelation
  ;Cost center value or cost center group, depending on the cost center code
 CostCenterRelationHelp=Die Kostenstelle oder die Kostenstellengruppe, je nach Kostenstellencode. Leer, wenn der Code «Alle» ist.
+CostCenters=Kostenstellen
+ ;Button on cost center groups
 EmploymentCategoryCode=Beschäftigungskategoriecode
  ;Table, group or all employment categories
 EmploymentCategoryCodeHelp=Wählen Sie, ob die Zeile für eine Beschäftigungskategorie, eine Beschäftigungskategoriegruppe oder alle Beschäftigungskategorien gilt.
@@ -21,9 +29,13 @@ EmploymentCategoryGroup=Beschäftigungskategoriegruppe
 EmploymentCategoryGroupDevDoc=The HOGpmaEmploymentCategoryGroup table contains groups of employment categories for the indirect cost matrix.
  ;{locked} Table developer documentation
 EmploymentCategoryGroups=Beschäftigungskategoriegruppen
+EmploymentCategoryGroupsHelp=Richten Sie Gruppen von BeschÃ¤ftigungskategorien fÃ¼r die Matrix fÃ¼r indirekte Kosten ein.
+ ;Menu item help
 EmploymentCategoryRelation=Beschäftigungskategorierelation
  ;Employment category or employment category group, depending on the employment category code
 EmploymentCategoryRelationHelp=Die Beschäftigungskategorie oder die Beschäftigungskategoriegruppe, je nach Beschäftigungskategoriecode. Leer, wenn der Code «Alle» ist.
+ErrCostCenterDimensionMissing=Richten Sie zuerst die Kostenstellendimension in den Parametern für Projektmanagement und -verrechnung ein.
+ ;Cost center dimension parameter is empty
 ErrGroupInUse=Die Gruppe %1 wird in der Matrix für indirekte Kosten verwendet und kann nicht gelöscht werden.
  ;%1 = group ID
 ErrRelationNotAllowed=%1 muss leer sein, wenn %2 «Alle» ist.
@@ -36,8 +48,14 @@ IndirectCostMatrix=Matrix für indirekte Kosten
  ;Matrix of employment category and cost center that selects the indirect component group
 IndirectCostMatrixDevDoc=The HOGpmaIndirectCostMatrix table selects the indirect component group of an hour line from the worker's employment category and cost center.
  ;{locked} Table developer documentation
+IndirectCostMatrixHelp=Legen Sie fest, welche indirekte Komponentengruppe fÃ¼r eine BeschÃ¤ftigungskategorie und Kostenstelle gilt.
+ ;Menu item help
 InfoGroupChangedOnPosting=Zeile %1: Indirekte Komponentengruppe beim Buchen von %2 auf %3 geändert.
  ;%1 = journal line number, %2 = old group, %3 = new group
+PrivMaintain=Matrix fÃ¼r indirekte Kosten verwalten
+ ;Security privilege
+PrivView=Matrix fÃ¼r indirekte Kosten anzeigen
+ ;Security privilege
 RefreshOnPosting=Indirekte Komponentengruppe beim Buchen neu ermitteln
  ;Parameter checkbox
 RefreshOnPostingHelp=Ermittelt die indirekte Komponentengruppe jeder Stundenerfassungszeile beim Buchen des Journals erneut, damit Änderungen an der Beschäftigung des Mitarbeiters seit dem Speichern der Zeile berücksichtigt werden.

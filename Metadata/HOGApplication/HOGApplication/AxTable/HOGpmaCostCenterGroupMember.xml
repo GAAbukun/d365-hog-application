@@ -12,6 +12,24 @@ public class HOGpmaCostCenterGroupMember extends common
 ]]></Declaration>
 		<Methods>
 			<Method>
+				<Name>validateWrite</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Checks that the cost center exists as a value of the cost center dimension.
+    /// </summary>
+    /// <returns>true if the record can be written; otherwise, false.</returns>
+    public boolean validateWrite()
+    {
+        boolean ret = super();
+
+        ret = ret && HOGpmaIndirectCostMatrixLookup::checkCostCenter(this.CostCenter);
+
+        return ret;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
 				<Name>find</Name>
 				<Source><![CDATA[
     /// <summary>
@@ -41,6 +59,7 @@ public class HOGpmaCostCenterGroupMember extends common
 	</SourceCode>
 	<ConfigurationKey>Project</ConfigurationKey>
 	<DeveloperDocumentation>@HOGpma:CostCenterGroupMemberDevDoc</DeveloperDocumentation>
+	<FormRef>HOGpmaCostCenterGroupMember</FormRef>
 	<Label>@HOGpma:CostCenterGroupMember</Label>
 	<TableGroup>Group</TableGroup>
 	<TitleField1>CostCenter</TitleField1>
@@ -49,7 +68,8 @@ public class HOGpmaCostCenterGroupMember extends common
 	<ClusteredIndex>CostCenterIdx</ClusteredIndex>
 	<CreateRecIdIndex>No</CreateRecIdIndex>
 	<Modules>ProjectManagementAndAccounting</Modules>
-	<PrimaryIndex>CostCenterIdx</PrimaryIndex>
+	<PrimaryIndex>RecIdx</PrimaryIndex>
+	<ReplacementKey>CostCenterIdx</ReplacementKey>
 	<DeleteActions />
 	<FieldGroups>
 		<AxTableFieldGroup>
@@ -101,15 +121,13 @@ public class HOGpmaCostCenterGroupMember extends common
 		</AxTableFieldGroup>
 	</FieldGroups>
 	<Fields>
-		<AxTableField xmlns=""
-			i:type="AxTableFieldString">
+		<AxTableField xmlns="" i:type="AxTableFieldString">
 			<Name>CostCenter</Name>
 			<AssetClassification>Customer Content</AssetClassification>
 			<ExtendedDataType>DimensionValue</ExtendedDataType>
 			<Mandatory>Yes</Mandatory>
 		</AxTableField>
-		<AxTableField xmlns=""
-			i:type="AxTableFieldString">
+		<AxTableField xmlns="" i:type="AxTableFieldString">
 			<Name>CostCenterGroupId</Name>
 			<AssetClassification>Customer Content</AssetClassification>
 			<ExtendedDataType>HOGpmaCostCenterGroupId</ExtendedDataType>
@@ -137,11 +155,18 @@ public class HOGpmaCostCenterGroupMember extends common
 				</AxTableIndexField>
 			</Fields>
 		</AxTableIndex>
+		<AxTableIndex>
+			<Name>RecIdx</Name>
+			<Fields>
+				<AxTableIndexField>
+					<DataField>RecId</DataField>
+				</AxTableIndexField>
+			</Fields>
+		</AxTableIndex>
 	</Indexes>
 	<Mappings />
 	<Relations>
-		<AxTableRelation xmlns=""
-			i:type="AxTableRelationForeignKey">
+		<AxTableRelation xmlns="" i:type="AxTableRelationForeignKey">
 			<Name>HOGpmaCostCenterGroup</Name>
 			<Cardinality>ZeroMore</Cardinality>
 			<OnDelete>Cascade</OnDelete>
@@ -149,8 +174,7 @@ public class HOGpmaCostCenterGroupMember extends common
 			<RelatedTableCardinality>ExactlyOne</RelatedTableCardinality>
 			<RelationshipType>Association</RelationshipType>
 			<Constraints>
-				<AxTableRelationConstraint xmlns=""
-					i:type="AxTableRelationConstraintField">
+				<AxTableRelationConstraint xmlns="" i:type="AxTableRelationConstraintField">
 					<Name>CostCenterGroupId</Name>
 					<Field>CostCenterGroupId</Field>
 					<RelatedField>CostCenterGroupId</RelatedField>

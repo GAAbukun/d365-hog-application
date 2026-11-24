@@ -118,8 +118,8 @@ public class HOGpmaIndirectCostMatrix extends common
     /// </summary>
     /// <returns>true if all referenced records exist; otherwise, false.</returns>
     /// <remarks>
-    /// A cost center on the Table level is not validated against the dimension values (VERIFY: add a check
-    /// against the cost center dimension from <c>ProjParameters.HOGpmaCostCenterDimensionAttribute</c>).
+    /// A cost center on the Table level is checked against the values of the cost center dimension
+    /// set up in <c>ProjParameters.HOGpmaCostCenterDimensionAttribute</c>.
     /// </remarks>
     private boolean checkRelationExists()
     {
@@ -148,6 +148,12 @@ public class HOGpmaIndirectCostMatrix extends common
                 break;
         }
 
+        if (this.CostCenterCode == TableGroupAll::Table
+            && !HOGpmaIndirectCostMatrixLookup::checkCostCenter(this.CostCenterRelation))
+        {
+            ret = false;
+        }
+
         if (this.CostCenterCode == TableGroupAll::GroupId
             && !HOGpmaCostCenterGroup::exist(this.CostCenterRelation))
         {
@@ -164,6 +170,7 @@ public class HOGpmaIndirectCostMatrix extends common
 	</SourceCode>
 	<ConfigurationKey>Project</ConfigurationKey>
 	<DeveloperDocumentation>@HOGpma:IndirectCostMatrixDevDoc</DeveloperDocumentation>
+	<FormRef>HOGpmaIndirectCostMatrix</FormRef>
 	<Label>@HOGpma:IndirectCostMatrix</Label>
 	<TableGroup>Group</TableGroup>
 	<TitleField1>IndirectComponentGroup</TitleField1>
@@ -172,7 +179,7 @@ public class HOGpmaIndirectCostMatrix extends common
 	<ClusteredIndex>MatrixIdx</ClusteredIndex>
 	<CreateRecIdIndex>No</CreateRecIdIndex>
 	<Modules>ProjectManagementAndAccounting</Modules>
-	<PrimaryIndex>MatrixIdx</PrimaryIndex>
+	<PrimaryIndex>RecIdx</PrimaryIndex>
 	<DeleteActions />
 	<FieldGroups>
 		<AxTableFieldGroup>
@@ -241,40 +248,34 @@ public class HOGpmaIndirectCostMatrix extends common
 		</AxTableFieldGroup>
 	</FieldGroups>
 	<Fields>
-		<AxTableField xmlns=""
-			i:type="AxTableFieldEnum">
+		<AxTableField xmlns="" i:type="AxTableFieldEnum">
 			<Name>EmploymentCategoryCode</Name>
 			<AssetClassification>Customer Content</AssetClassification>
 			<ExtendedDataType>HOGpmaEmploymentCategoryCode</ExtendedDataType>
 			<EnumType>TableGroupAll</EnumType>
 		</AxTableField>
-		<AxTableField xmlns=""
-			i:type="AxTableFieldString">
+		<AxTableField xmlns="" i:type="AxTableFieldString">
 			<Name>EmploymentCategoryRelation</Name>
 			<AssetClassification>Customer Content</AssetClassification>
 			<ExtendedDataType>HOGpmaEmploymentCategoryRelation</ExtendedDataType>
 		</AxTableField>
-		<AxTableField xmlns=""
-			i:type="AxTableFieldEnum">
+		<AxTableField xmlns="" i:type="AxTableFieldEnum">
 			<Name>CostCenterCode</Name>
 			<AssetClassification>Customer Content</AssetClassification>
 			<ExtendedDataType>HOGpmaCostCenterCode</ExtendedDataType>
 			<EnumType>TableGroupAll</EnumType>
 		</AxTableField>
-		<AxTableField xmlns=""
-			i:type="AxTableFieldString">
+		<AxTableField xmlns="" i:type="AxTableFieldString">
 			<Name>CostCenterRelation</Name>
 			<AssetClassification>Customer Content</AssetClassification>
 			<ExtendedDataType>HOGpmaCostCenterRelation</ExtendedDataType>
 		</AxTableField>
-		<AxTableField xmlns=""
-			i:type="AxTableFieldDate">
+		<AxTableField xmlns="" i:type="AxTableFieldDate">
 			<Name>ValidFrom</Name>
 			<AssetClassification>Customer Content</AssetClassification>
 			<ExtendedDataType>FromDate</ExtendedDataType>
 		</AxTableField>
-		<AxTableField xmlns=""
-			i:type="AxTableFieldString">
+		<AxTableField xmlns="" i:type="AxTableFieldString">
 			<Name>IndirectComponentGroup</Name>
 			<AssetClassification>Customer Content</AssetClassification>
 			<ExtendedDataType>PSAIndirectComponentGroupId</ExtendedDataType>
@@ -305,11 +306,18 @@ public class HOGpmaIndirectCostMatrix extends common
 				</AxTableIndexField>
 			</Fields>
 		</AxTableIndex>
+		<AxTableIndex>
+			<Name>RecIdx</Name>
+			<Fields>
+				<AxTableIndexField>
+					<DataField>RecId</DataField>
+				</AxTableIndexField>
+			</Fields>
+		</AxTableIndex>
 	</Indexes>
 	<Mappings />
 	<Relations>
-		<AxTableRelation xmlns=""
-			i:type="AxTableRelationForeignKey">
+		<AxTableRelation xmlns="" i:type="AxTableRelationForeignKey">
 			<Name>PSAIndirectComponentGroup</Name>
 			<Cardinality>ZeroMore</Cardinality>
 			<OnDelete>Restricted</OnDelete>
@@ -317,8 +325,7 @@ public class HOGpmaIndirectCostMatrix extends common
 			<RelatedTableCardinality>ExactlyOne</RelatedTableCardinality>
 			<RelationshipType>Association</RelationshipType>
 			<Constraints>
-				<AxTableRelationConstraint xmlns=""
-					i:type="AxTableRelationConstraintField">
+				<AxTableRelationConstraint xmlns="" i:type="AxTableRelationConstraintField">
 					<Name>IndirectComponentGroup</Name>
 					<Field>IndirectComponentGroup</Field>
 					<RelatedField>ComponentGroupId</RelatedField>
@@ -333,14 +340,12 @@ public class HOGpmaIndirectCostMatrix extends common
 			<RelatedTableCardinality>ZeroOne</RelatedTableCardinality>
 			<RelationshipType>Association</RelationshipType>
 			<Constraints>
-				<AxTableRelationConstraint xmlns=""
-					i:type="AxTableRelationConstraintFixed">
+				<AxTableRelationConstraint xmlns="" i:type="AxTableRelationConstraintFixed">
 					<Name>EmploymentCategoryCode</Name>
 					<Field>EmploymentCategoryCode</Field>
 					<ValueStr>TableGroupAll::Table</ValueStr>
 				</AxTableRelationConstraint>
-				<AxTableRelationConstraint xmlns=""
-					i:type="AxTableRelationConstraintField">
+				<AxTableRelationConstraint xmlns="" i:type="AxTableRelationConstraintField">
 					<Name>EmploymentCategoryRelation</Name>
 					<Field>EmploymentCategoryRelation</Field>
 					<RelatedField>EmploymentCategory</RelatedField>
@@ -354,14 +359,12 @@ public class HOGpmaIndirectCostMatrix extends common
 			<RelatedTableCardinality>ZeroOne</RelatedTableCardinality>
 			<RelationshipType>Association</RelationshipType>
 			<Constraints>
-				<AxTableRelationConstraint xmlns=""
-					i:type="AxTableRelationConstraintFixed">
+				<AxTableRelationConstraint xmlns="" i:type="AxTableRelationConstraintFixed">
 					<Name>EmploymentCategoryCode</Name>
 					<Field>EmploymentCategoryCode</Field>
 					<ValueStr>TableGroupAll::GroupId</ValueStr>
 				</AxTableRelationConstraint>
-				<AxTableRelationConstraint xmlns=""
-					i:type="AxTableRelationConstraintField">
+				<AxTableRelationConstraint xmlns="" i:type="AxTableRelationConstraintField">
 					<Name>EmploymentCategoryRelation</Name>
 					<Field>EmploymentCategoryRelation</Field>
 					<RelatedField>EmploymentCategoryGroupId</RelatedField>
@@ -375,14 +378,12 @@ public class HOGpmaIndirectCostMatrix extends common
 			<RelatedTableCardinality>ZeroOne</RelatedTableCardinality>
 			<RelationshipType>Association</RelationshipType>
 			<Constraints>
-				<AxTableRelationConstraint xmlns=""
-					i:type="AxTableRelationConstraintFixed">
+				<AxTableRelationConstraint xmlns="" i:type="AxTableRelationConstraintFixed">
 					<Name>CostCenterCode</Name>
 					<Field>CostCenterCode</Field>
 					<ValueStr>TableGroupAll::GroupId</ValueStr>
 				</AxTableRelationConstraint>
-				<AxTableRelationConstraint xmlns=""
-					i:type="AxTableRelationConstraintField">
+				<AxTableRelationConstraint xmlns="" i:type="AxTableRelationConstraintField">
 					<Name>CostCenterRelation</Name>
 					<Field>CostCenterRelation</Field>
 					<RelatedField>CostCenterGroupId</RelatedField>

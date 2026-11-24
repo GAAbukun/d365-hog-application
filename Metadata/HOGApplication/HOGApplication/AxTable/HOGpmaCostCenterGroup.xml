@@ -88,6 +88,7 @@ public class HOGpmaCostCenterGroup extends common
 	</SourceCode>
 	<ConfigurationKey>Project</ConfigurationKey>
 	<DeveloperDocumentation>@HOGpma:CostCenterGroupDevDoc</DeveloperDocumentation>
+	<FormRef>HOGpmaCostCenterGroup</FormRef>
 	<Label>@HOGpma:CostCenterGroups</Label>
 	<TableGroup>Group</TableGroup>
 	<TitleField1>CostCenterGroupId</TitleField1>
@@ -97,14 +98,7 @@ public class HOGpmaCostCenterGroup extends common
 	<CreateRecIdIndex>No</CreateRecIdIndex>
 	<Modules>ProjectManagementAndAccounting</Modules>
 	<PrimaryIndex>CostCenterGroupIdx</PrimaryIndex>
-	<DeleteActions>
-		<AxTableDeleteAction>
-			<Name>HOGpmaCostCenterGroupMember</Name>
-			<DeleteAction>Cascade</DeleteAction>
-			<Relation></Relation>
-			<Table>HOGpmaCostCenterGroupMember</Table>
-		</AxTableDeleteAction>
-	</DeleteActions>
+	<DeleteActions></DeleteActions>
 	<FieldGroups>
 		<AxTableFieldGroup>
 			<Name>AutoReport</Name>
@@ -155,8 +149,7 @@ public class HOGpmaCostCenterGroup extends common
 		</AxTableFieldGroup>
 	</FieldGroups>
 	<Fields>
-		<AxTableField xmlns=""
-			i:type="AxTableFieldString">
+		<AxTableField xmlns="" i:type="AxTableFieldString">
 			<Name>CostCenterGroupId</Name>
 			<AllowEdit>No</AllowEdit>
 			<AssetClassification>Customer Content</AssetClassification>
@@ -164,8 +157,7 @@ public class HOGpmaCostCenterGroup extends common
 			<IgnoreEDTRelation>Yes</IgnoreEDTRelation>
 			<Mandatory>Yes</Mandatory>
 		</AxTableField>
-		<AxTableField xmlns=""
-			i:type="AxTableFieldString">
+		<AxTableField xmlns="" i:type="AxTableFieldString">
 			<Name>Description</Name>
 			<AssetClassification>Customer Content</AssetClassification>
 			<ExtendedDataType>Description</ExtendedDataType>

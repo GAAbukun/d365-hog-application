@@ -94,8 +94,8 @@ public class HOGpmaEmploymentCategoryGroup extends common
 	</SourceCode>
 	<ConfigurationKey>Project</ConfigurationKey>
 	<DeveloperDocumentation>@HOGpma:EmploymentCategoryGroupDevDoc</DeveloperDocumentation>
+	<FormRef>HOGpmaEmploymentCategoryGroup</FormRef>
 	<Label>@HOGpma:EmploymentCategoryGroups</Label>
-	<SaveDataPerCompany>No</SaveDataPerCompany>
 	<TableGroup>Group</TableGroup>
 	<TitleField1>EmploymentCategoryGroupId</TitleField1>
 	<TitleField2>Description</TitleField2>
@@ -104,6 +104,7 @@ public class HOGpmaEmploymentCategoryGroup extends common
 	<CreateRecIdIndex>No</CreateRecIdIndex>
 	<Modules>ProjectManagementAndAccounting</Modules>
 	<PrimaryIndex>EmploymentCategoryGroupIdx</PrimaryIndex>
+	<SaveDataPerCompany>No</SaveDataPerCompany>
 	<DeleteActions />
 	<FieldGroups>
 		<AxTableFieldGroup>
@@ -155,8 +156,7 @@ public class HOGpmaEmploymentCategoryGroup extends common
 		</AxTableFieldGroup>
 	</FieldGroups>
 	<Fields>
-		<AxTableField xmlns=""
-			i:type="AxTableFieldString">
+		<AxTableField xmlns="" i:type="AxTableFieldString">
 			<Name>EmploymentCategoryGroupId</Name>
 			<AllowEdit>No</AllowEdit>
 			<AssetClassification>Customer Content</AssetClassification>
@@ -164,8 +164,7 @@ public class HOGpmaEmploymentCategoryGroup extends common
 			<IgnoreEDTRelation>Yes</IgnoreEDTRelation>
 			<Mandatory>Yes</Mandatory>
 		</AxTableField>
-		<AxTableField xmlns=""
-			i:type="AxTableFieldString">
+		<AxTableField xmlns="" i:type="AxTableFieldString">
 			<Name>Description</Name>
 			<AssetClassification>Customer Content</AssetClassification>
 			<ExtendedDataType>Description</ExtendedDataType>

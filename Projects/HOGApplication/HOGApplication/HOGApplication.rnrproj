@@ -98,6 +98,31 @@
       <Name>HOGpmaRefreshIndirectGroupOnPosting</Name>
       <Link>HOGpmaRefreshIndirectGroupOnPosting</Link>
     </Content>
+    <Content Include="AxForm\HOGpmaCostCenterGroup">
+      <SubType>Content</SubType>
+      <Name>HOGpmaCostCenterGroup</Name>
+      <Link>HOGpmaCostCenterGroup</Link>
+    </Content>
+    <Content Include="AxForm\HOGpmaCostCenterGroupMember">
+      <SubType>Content</SubType>
+      <Name>HOGpmaCostCenterGroupMember</Name>
+      <Link>HOGpmaCostCenterGroupMember</Link>
+    </Content>
+    <Content Include="AxForm\HOGpmaEmploymentCategoryGroup">
+      <SubType>Content</SubType>
+      <Name>HOGpmaEmploymentCategoryGroup</Name>
+      <Link>HOGpmaEmploymentCategoryGroup</Link>
+    </Content>
+    <Content Include="AxForm\HOGpmaIndirectCostMatrix">
+      <SubType>Content</SubType>
+      <Name>HOGpmaIndirectCostMatrix</Name>
+      <Link>HOGpmaIndirectCostMatrix</Link>
+    </Content>
+    <Content Include="AxFormExtension\BenefitEmploymentCategory.HOGpma">
+      <SubType>Content</SubType>
+      <Name>BenefitEmploymentCategory.HOGpma</Name>
+      <Link>BenefitEmploymentCategory.HOGpma</Link>
+    </Content>
     <Content Include="AxFormExtension\ProjParameters.HOGpma">
       <SubType>Content</SubType>
       <Name>ProjParameters.HOGpma</Name>
@@ -117,6 +142,61 @@
       <SubType>Content</SubType>
       <Name>HOGpma_en-US</Name>
       <Link>HOGpma_en-US</Link>
+    </Content>
+    <Content Include="AxMenuExtension\ProjectManagementAndAccounting.HOGpma">
+      <SubType>Content</SubType>
+      <Name>ProjectManagementAndAccounting.HOGpma</Name>
+      <Link>ProjectManagementAndAccounting.HOGpma</Link>
+    </Content>
+    <Content Include="AxMenuItemDisplay\HOGpmaCostCenterGroup">
+      <SubType>Content</SubType>
+      <Name>HOGpmaCostCenterGroup</Name>
+      <Link>HOGpmaCostCenterGroup</Link>
+    </Content>
+    <Content Include="AxMenuItemDisplay\HOGpmaCostCenterGroupMember">
+      <SubType>Content</SubType>
+      <Name>HOGpmaCostCenterGroupMember</Name>
+      <Link>HOGpmaCostCenterGroupMember</Link>
+    </Content>
+    <Content Include="AxMenuItemDisplay\HOGpmaEmploymentCategoryGroup">
+      <SubType>Content</SubType>
+      <Name>HOGpmaEmploymentCategoryGroup</Name>
+      <Link>HOGpmaEmploymentCategoryGroup</Link>
+    </Content>
+    <Content Include="AxMenuItemDisplay\HOGpmaIndirectCostMatrix">
+      <SubType>Content</SubType>
+      <Name>HOGpmaIndirectCostMatrix</Name>
+      <Link>HOGpmaIndirectCostMatrix</Link>
+    </Content>
+    <Content Include="AxSecurityDutyExtension\ProjProjectAccountingProcessEnable.HOGpma">
+      <SubType>Content</SubType>
+      <Name>ProjProjectAccountingProcessEnable.HOGpma</Name>
+      <Link>ProjProjectAccountingProcessEnable.HOGpma</Link>
+    </Content>
+    <Content Include="AxSecurityDutyExtension\ProjProjectContractMasterMaintain.HOGpma">
+      <SubType>Content</SubType>
+      <Name>ProjProjectContractMasterMaintain.HOGpma</Name>
+      <Link>ProjProjectContractMasterMaintain.HOGpma</Link>
+    </Content>
+    <Content Include="AxSecurityDutyExtension\ProjProjectMasterInquire.HOGpma">
+      <SubType>Content</SubType>
+      <Name>ProjProjectMasterInquire.HOGpma</Name>
+      <Link>ProjProjectMasterInquire.HOGpma</Link>
+    </Content>
+    <Content Include="AxSecurityDutyExtension\ProjProjectMasterMaintain.HOGpma">
+      <SubType>Content</SubType>
+      <Name>ProjProjectMasterMaintain.HOGpma</Name>
+      <Link>ProjProjectMasterMaintain.HOGpma</Link>
+    </Content>
+    <Content Include="AxSecurityPrivilege\HOGpmaIndirectCostMatrixMaintain">
+      <SubType>Content</SubType>
+      <Name>HOGpmaIndirectCostMatrixMaintain</Name>
+      <Link>HOGpmaIndirectCostMatrixMaintain</Link>
+    </Content>
+    <Content Include="AxSecurityPrivilege\HOGpmaIndirectCostMatrixView">
+      <SubType>Content</SubType>
+      <Name>HOGpmaIndirectCostMatrixView</Name>
+      <Link>HOGpmaIndirectCostMatrixView</Link>
     </Content>
     <Content Include="AxTable\HOGpmaCostCenterGroup">
       <SubType>Content</SubType>

@@ -165,6 +165,47 @@ public final class HOGpmaIndirectCostMatrixLookup
 ]]></Source>
 			</Method>
 			<Method>
+				<Name>costCenterDimension</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Gets the financial dimension that holds the cost center, as set up in the project parameters.
+    /// </summary>
+    /// <returns>The dimension attribute; an empty record if the parameter is not set.</returns>
+    public static DimensionAttribute costCenterDimension()
+    {
+        return DimensionAttribute::find(ProjParameters::find().HOGpmaCostCenterDimensionAttribute);
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>checkCostCenter</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Checks that a cost center exists as a value of the cost center dimension.
+    /// </summary>
+    /// <param name = "_costCenter">The cost center value.</param>
+    /// <returns>true if the value exists; otherwise, false, with a message in the infolog.</returns>
+    public static boolean checkCostCenter(DimensionValue _costCenter)
+    {
+        DimensionAttribute costCenterDimension = HOGpmaIndirectCostMatrixLookup::costCenterDimension();
+
+        if (!costCenterDimension.RecId)
+        {
+            return checkFailed("@HOGpma:ErrCostCenterDimensionMissing");
+        }
+
+        if (!DimensionAttributeValue::findByDimensionAttributeAndValueNoError(costCenterDimension, _costCenter).RecId)
+        {
+            return checkFailed(strFmt("@HOGpma:ErrValueNotFound", costCenterDimension.localizedName(), _costCenter));
+        }
+
+        return true;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
 				<Name>cacheScope</Name>
 				<Source><![CDATA[
     /// <summary>
