@@ -17,9 +17,15 @@ IndirectCostMatrixDevDoc=The HOGpmaIndirectCostMatrix table selects the indirect
  ;{locked} Table developer documentation
 IndirectCostMatrixHelp=Set up which indirect component group applies to an employment category and cost center.
  ;Menu item help
+IndirectCostRates=Indirect cost component rates
+ ;Data entity: assigned indirect cost components (rates) of the indirect component groups
 InfoGroupChangedOnPosting=Line %1: indirect component group changed from %2 to %3 during posting.
  ;%1 = journal line number, %2 = old group, %3 = new group
 PrivMaintain=Maintain indirect cost matrix
+ ;Security privilege
+PrivRateEntityMaintain=Maintain indirect cost component rates entity
+ ;Security privilege
+PrivRateEntityView=View indirect cost component rates entity
  ;Security privilege
 PrivView=View indirect cost matrix
  ;Security privilege

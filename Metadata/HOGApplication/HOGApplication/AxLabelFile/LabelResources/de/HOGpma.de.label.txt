@@ -17,9 +17,15 @@ IndirectCostMatrixDevDoc=The HOGpmaIndirectCostMatrix table selects the indirect
  ;{locked} Table developer documentation
 IndirectCostMatrixHelp=Legen Sie fest, welche indirekte Komponentengruppe fÃ¼r eine BeschÃ¤ftigungskategorie und Kostenstelle gilt.
  ;Menu item help
+IndirectCostRates=SÃ¤tze indirekter Kostenkomponenten
+ ;Data entity: assigned indirect cost components (rates) of the indirect component groups
 InfoGroupChangedOnPosting=Zeile %1: Indirekte Komponentengruppe beim Buchen von %2 auf %3 geändert.
  ;%1 = journal line number, %2 = old group, %3 = new group
 PrivMaintain=Matrix fÃ¼r indirekte Kosten verwalten
+ ;Security privilege
+PrivRateEntityMaintain=EntitÃ¤t SÃ¤tze indirekter Kostenkomponenten verwalten
+ ;Security privilege
+PrivRateEntityView=EntitÃ¤t SÃ¤tze indirekter Kostenkomponenten anzeigen
  ;Security privilege
 PrivView=Matrix fÃ¼r indirekte Kosten anzeigen
  ;Security privilege

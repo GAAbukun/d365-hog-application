@@ -58,6 +58,11 @@
       <Name>SubBillScheduleLine_HOGsba_Extension</Name>
       <Link>SubBillScheduleLine_HOGsba_Extension</Link>
     </Content>
+    <Content Include="AxDataEntityView\HOGpmaIndirectCostRateEntity">
+      <SubType>Content</SubType>
+      <Name>HOGpmaIndirectCostRateEntity</Name>
+      <Link>HOGpmaIndirectCostRateEntity</Link>
+    </Content>
     <Content Include="AxEdt\HOGpmaCostCenterDimensionAttribute">
       <SubType>Content</SubType>
       <Name>HOGpmaCostCenterDimensionAttribute</Name>
@@ -113,6 +118,11 @@
       <Name>ProjProjectContractMasterMaintain.HOGpma</Name>
       <Link>ProjProjectContractMasterMaintain.HOGpma</Link>
     </Content>
+    <Content Include="AxSecurityDutyExtension\ProjProjectJournalsMaintain.HOGpma">
+      <SubType>Content</SubType>
+      <Name>ProjProjectJournalsMaintain.HOGpma</Name>
+      <Link>ProjProjectJournalsMaintain.HOGpma</Link>
+    </Content>
     <Content Include="AxSecurityDutyExtension\ProjProjectMasterInquire.HOGpma">
       <SubType>Content</SubType>
       <Name>ProjProjectMasterInquire.HOGpma</Name>
@@ -133,10 +143,25 @@
       <Name>HOGpmaIndirectCostMatrixView</Name>
       <Link>HOGpmaIndirectCostMatrixView</Link>
     </Content>
+    <Content Include="AxSecurityPrivilege\HOGpmaIndirectCostRateEntityMaintain">
+      <SubType>Content</SubType>
+      <Name>HOGpmaIndirectCostRateEntityMaintain</Name>
+      <Link>HOGpmaIndirectCostRateEntityMaintain</Link>
+    </Content>
+    <Content Include="AxSecurityPrivilege\HOGpmaIndirectCostRateEntityView">
+      <SubType>Content</SubType>
+      <Name>HOGpmaIndirectCostRateEntityView</Name>
+      <Link>HOGpmaIndirectCostRateEntityView</Link>
+    </Content>
     <Content Include="AxTable\HOGpmaIndirectCostMatrix">
       <SubType>Content</SubType>
       <Name>HOGpmaIndirectCostMatrix</Name>
       <Link>HOGpmaIndirectCostMatrix</Link>
+    </Content>
+    <Content Include="AxTable\HOGpmaIndirectCostRateStaging">
+      <SubType>Content</SubType>
+      <Name>HOGpmaIndirectCostRateStaging</Name>
+      <Link>HOGpmaIndirectCostRateStaging</Link>
     </Content>
     <Content Include="AxTableExtension\ProjParameters.HOGpma">
       <SubType>Content</SubType>

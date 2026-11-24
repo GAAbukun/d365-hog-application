@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxDataEntityView xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>HOGpmaIndirectCostRateEntity</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+/// <summary>
+/// Data entity for the assigned indirect cost components of the indirect component groups
+/// (form <c>PSAIndirectCompoundingSetup</c>): date, component, calculation method and rates.
+/// </summary>
+/// <remarks>
+/// The standard has no entity for these lines. Like the standard form, inserting a line creates the
+/// compounding rule lines (<c>PSAIndirectCompoundingSetup.insert</c>). For a <c>Percent</c> line, the entity
+/// also selects <c>Base amount</c> as the base of every rate type (cost, revenue, invoice) whose rate is
+/// not 0, unless that component already has a base selected for that type in the group. This is what
+/// <c>Compounding rules</c> &gt; <c>Base amount</c> does in the form.
+/// </remarks>
+public class HOGpmaIndirectCostRateEntity extends common
+{
+    #define.BaseAmount('Base amount')
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>mapEntityToDataSource</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Fills the component name from the component, as the standard form does, if the import leaves it empty.
+    /// </summary>
+    /// <param name = "_entityCtx">The entity runtime context.</param>
+    /// <param name = "_dataSourceCtx">The data source runtime context.</param>
+    public void mapEntityToDataSource(DataEntityRuntimeContext _entityCtx, DataEntityDataSourceRuntimeContext _dataSourceCtx)
+    {
+        super(_entityCtx, _dataSourceCtx);
+
+        if (_dataSourceCtx.name() == dataEntityDataSourceStr(HOGpmaIndirectCostRateEntity, PSAIndirectCompoundingSetup))
+        {
+            PSAIndirectCompoundingSetup setup = _dataSourceCtx.getBuffer();
+
+            if (!setup.ComponentName)
+            {
+                setup.ComponentName = PSAIndirectComponent::find(setup.ComponentId).ComponentName;
+            }
+        }
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>insert</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Inserts the line and selects Base amount as the base of its percentages.
+    /// </summary>
+    public void insert()
+    {
+        ttsbegin;
+        super();
+        this.addBaseAmountRules();
+        ttscommit;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>update</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Updates the line and selects Base amount as the base of percentages that are no longer 0.
+    /// </summary>
+    public void update()
+    {
+        ttsbegin;
+        super();
+        this.addBaseAmountRules();
+        ttscommit;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>addBaseAmountRules</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Selects Base amount as the base of each rate type with a percentage other than 0.
+    /// </summary>
+    private void addBaseAmountRules()
+    {
+        if (this.CalculationMethod == PSAIndirectComponentCalcMethod::Percent)
+        {
+            this.addBaseAmountRule(PSAIndirectComponentType::Cost,    this.CostRate);
+            this.addBaseAmountRule(PSAIndirectComponentType::Revenue, this.RevenueRate);
+            this.addBaseAmountRule(PSAIndirectComponentType::Invoice, this.InvoiceRate);
+        }
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>addBaseAmountRule</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Selects Base amount as the base of the component for one rate type, if the component has no base for that type yet.
+    /// </summary>
+    /// <param name = "_type">The rate type.</param>
+    /// <param name = "_rate">The rate of that type; nothing is selected if it is 0.</param>
+    /// <remarks>
+    /// Writes the same record as <c>Compounding rules</c> in the standard form (<c>PSAListPanelRelationTable</c>).
+    /// </remarks>
+    private void addBaseAmountRule(PSAIndirectComponentType _type, Price _rate)
+    {
+        PSAIndirectCompoundingRulesSelection selection;
+
+        if (_rate)
+        {
+            select firstonly RecId from selection
+                where selection.ComponentGroupId == this.IndirectCostComponentGroup
+                   && selection.ComponentType    == _type
+                   && selection.BaseComponentId  == this.IndirectCostComponent;
+
+            if (!selection.RecId)
+            {
+                selection.ComponentGroupId = this.IndirectCostComponentGroup;
+                selection.ComponentType    = _type;
+                selection.BaseComponentId  = this.IndirectCostComponent;
+                selection.ComponentId      = #BaseAmount;
+                selection.insert();
+            }
+        }
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+	<ConfigurationKey>Project</ConfigurationKey>
+	<DeveloperDocumentation>@HOGpma:IndirectCostRates</DeveloperDocumentation>
+	<FormRef>PSAIndirectCompoundingRulesSetup</FormRef>
+	<Label>@HOGpma:IndirectCostRates</Label>
+	<Tags>Indirects costs setup</Tags>
+	<DataManagementEnabled>Yes</DataManagementEnabled>
+	<DataManagementStagingTable>HOGpmaIndirectCostRateStaging</DataManagementStagingTable>
+	<IsPublic>Yes</IsPublic>
+	<Modules>ProjectManagementAndAccounting</Modules>
+	<PrimaryCompanyContext>DataAreaId</PrimaryCompanyContext>
+	<PrimaryKey>EntityKey</PrimaryKey>
+	<PublicCollectionName>HOGpmaIndirectCostRates</PublicCollectionName>
+	<PublicEntityName>HOGpmaIndirectCostRate</PublicEntityName>
+	<DeleteActions />
+	<FieldGroups>
+		<AxTableFieldGroup>
+			<Name>AutoReport</Name>
+			<Fields />
+		</AxTableFieldGroup>
+		<AxTableFieldGroup>
+			<Name>AutoLookup</Name>
+			<Fields />
+		</AxTableFieldGroup>
+		<AxTableFieldGroup>
+			<Name>AutoIdentification</Name>
+			<AutoPopulate>Yes</AutoPopulate>
+			<Fields />
+		</AxTableFieldGroup>
+		<AxTableFieldGroup>
+			<Name>AutoSummary</Name>
+			<Fields />
+		</AxTableFieldGroup>
+		<AxTableFieldGroup>
+			<Name>AutoBrowse</Name>
+			<Fields />
+		</AxTableFieldGroup>
+	</FieldGroups>
+	<Fields>
+		<AxDataEntityViewField xmlns=""
+			i:type="AxDataEntityViewMappedField">
+			<Name>IndirectCostComponentGroup</Name>
+			<Mandatory>Yes</Mandatory>
+			<DataField>ProjComponentGroupId</DataField>
+			<DataSource>PSAIndirectCompoundingSetup</DataSource>
+		</AxDataEntityViewField>
+		<AxDataEntityViewField xmlns=""
+			i:type="AxDataEntityViewMappedField">
+			<Name>FromDate</Name>
+			<Mandatory>Yes</Mandatory>
+			<DataField>DateFrom</DataField>
+			<DataSource>PSAIndirectCompoundingSetup</DataSource>
+		</AxDataEntityViewField>
+		<AxDataEntityViewField xmlns=""
+			i:type="AxDataEntityViewMappedField">
+			<Name>IndirectCostComponent</Name>
+			<Mandatory>Yes</Mandatory>
+			<DataField>ComponentId</DataField>
+			<DataSource>PSAIndirectCompoundingSetup</DataSource>
+		</AxDataEntityViewField>
+		<AxDataEntityViewField xmlns=""
+			i:type="AxDataEntityViewMappedField">
+			<Name>IndirectCostComponentName</Name>
+			<DataField>ComponentName</DataField>
+			<DataSource>PSAIndirectCompoundingSetup</DataSource>
+		</AxDataEntityViewField>
+		<AxDataEntityViewField xmlns=""
+			i:type="AxDataEntityViewMappedField">
+			<Name>CalculationMethod</Name>
+			<DataField>CalcMethod</DataField>
+			<DataSource>PSAIndirectCompoundingSetup</DataSource>
+		</AxDataEntityViewField>
+		<AxDataEntityViewField xmlns=""
+			i:type="AxDataEntityViewMappedField">
+			<Name>CostRate</Name>
+			<DataField>CostRate</DataField>
+			<DataSource>PSAIndirectCompoundingSetup</DataSource>
+		</AxDataEntityViewField>
+		<AxDataEntityViewField xmlns=""
+			i:type="AxDataEntityViewMappedField">
+			<Name>RevenueRate</Name>
+			<DataField>RevenueRate</DataField>
+			<DataSource>PSAIndirectCompoundingSetup</DataSource>
+		</AxDataEntityViewField>
+		<AxDataEntityViewField xmlns=""
+			i:type="AxDataEntityViewMappedField">
+			<Name>InvoiceRate</Name>
+			<DataField>InvoiceRate</DataField>
+			<DataSource>PSAIndirectCompoundingSetup</DataSource>
+		</AxDataEntityViewField>
+	</Fields>
+	<Keys>
+		<AxDataEntityViewKey>
+			<Name>EntityKey</Name>
+			<Fields>
+				<AxDataEntityViewKeyField>
+					<DataField>IndirectCostComponentGroup</DataField>
+				</AxDataEntityViewKeyField>
+				<AxDataEntityViewKeyField>
+					<DataField>IndirectCostComponent</DataField>
+				</AxDataEntityViewKeyField>
+				<AxDataEntityViewKeyField>
+					<DataField>FromDate</DataField>
+				</AxDataEntityViewKeyField>
+			</Fields>
+		</AxDataEntityViewKey>
+	</Keys>
+	<Mappings />
+	<Ranges />
+	<Relations />
+	<StateMachines />
+	<ViewMetadata>
+		<Name>Metadata</Name>
+		<SourceCode>
+			<Methods>
+				<Method>
+					<Name>classDeclaration</Name>
+					<Source><![CDATA[
+[Query]
+public class Metadata extends QueryRun
+{
+}
+]]></Source>
+				</Method>
+			</Methods>
+		</SourceCode>
+		<DataSources>
+			<AxQuerySimpleRootDataSource>
+				<Name>PSAIndirectCompoundingSetup</Name>
+				<DynamicFields>Yes</DynamicFields>
+				<Table>PSAIndirectCompoundingSetup</Table>
+				<DataSources />
+				<DerivedDataSources />
+				<Fields />
+				<Ranges />
+				<GroupBy />
+				<Having />
+				<OrderBy />
+			</AxQuerySimpleRootDataSource>
+		</DataSources>
+	</ViewMetadata>
+</AxDataEntityView>

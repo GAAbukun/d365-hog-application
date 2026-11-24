@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxTable xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>HOGpmaIndirectCostRateStaging</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+public class HOGpmaIndirectCostRateStaging extends common
+{
+}
+]]></Declaration>
+		<Methods />
+	</SourceCode>
+	<ConfigurationKey>Project</ConfigurationKey>
+	<DeveloperDocumentation>@DMF:StagingDeveloperDocumentation</DeveloperDocumentation>
+	<FormRef>PSAIndirectCompoundingRulesSetup</FormRef>
+	<Label>@HOGpma:IndirectCostRates</Label>
+	<TableGroup>Staging</TableGroup>
+	<TitleField1>IndirectCostComponentGroup</TitleField1>
+	<TitleField2>IndirectCostComponent</TitleField2>
+	<PrimaryIndex>StagingIdx</PrimaryIndex>
+	<ReplacementKey>StagingIdx</ReplacementKey>
+	<SaveDataPerCompany>No</SaveDataPerCompany>
+	<DeleteActions />
+	<FieldGroups>
+		<AxTableFieldGroup>
+			<Name>AutoReport</Name>
+			<IsSystemGenerated>Yes</IsSystemGenerated>
+			<Fields />
+		</AxTableFieldGroup>
+		<AxTableFieldGroup>
+			<Name>AutoLookup</Name>
+			<IsSystemGenerated>Yes</IsSystemGenerated>
+			<Fields />
+		</AxTableFieldGroup>
+		<AxTableFieldGroup>
+			<Name>AutoIdentification</Name>
+			<AutoPopulate>Yes</AutoPopulate>
+			<IsSystemGenerated>Yes</IsSystemGenerated>
+			<Fields />
+		</AxTableFieldGroup>
+		<AxTableFieldGroup>
+			<Name>AutoSummary</Name>
+			<IsSystemGenerated>Yes</IsSystemGenerated>
+			<Fields />
+		</AxTableFieldGroup>
+		<AxTableFieldGroup>
+			<Name>AutoBrowse</Name>
+			<IsSystemGenerated>Yes</IsSystemGenerated>
+			<Fields />
+		</AxTableFieldGroup>
+		<AxTableFieldGroup>
+			<Name>ExtensionList</Name>
+			<IsSystemGenerated>Yes</IsSystemGenerated>
+			<Label>@DMF:StagingExtensionGroup</Label>
+			<Fields>
+				<AxTableFieldGroupField>
+					<DataField>DefinitionGroup</DataField>
+				</AxTableFieldGroupField>
+				<AxTableFieldGroupField>
+					<DataField>IsSelected</DataField>
+				</AxTableFieldGroupField>
+				<AxTableFieldGroupField>
+					<DataField>TransferStatus</DataField>
+				</AxTableFieldGroupField>
+				<AxTableFieldGroupField>
+					<DataField>ExecutionId</DataField>
+				</AxTableFieldGroupField>
+			</Fields>
+		</AxTableFieldGroup>
+	</FieldGroups>
+	<Fields>
+		<AxTableField xmlns="" i:type="AxTableFieldString">
+			<Name>DefinitionGroup</Name>
+			<AllowEdit>No</AllowEdit>
+			<ExtendedDataType>DMFDefinitionGroupName</ExtendedDataType>
+			<IsSystemGenerated>Yes</IsSystemGenerated>
+			<Mandatory>Yes</Mandatory>
+			<StringSize>60</StringSize>
+		</AxTableField>
+		<AxTableField xmlns="" i:type="AxTableFieldString">
+			<Name>ExecutionId</Name>
+			<AllowEdit>No</AllowEdit>
+			<ExtendedDataType>DMFExecutionId</ExtendedDataType>
+			<IsSystemGenerated>Yes</IsSystemGenerated>
+			<Mandatory>Yes</Mandatory>
+			<StringSize>90</StringSize>
+		</AxTableField>
+		<AxTableField xmlns="" i:type="AxTableFieldEnum">
+			<Name>IsSelected</Name>
+			<ExtendedDataType>DMFIsSelected</ExtendedDataType>
+			<IsSystemGenerated>Yes</IsSystemGenerated>
+			<EnumType>NoYes</EnumType>
+		</AxTableField>
+		<AxTableField xmlns="" i:type="AxTableFieldEnum">
+			<Name>TransferStatus</Name>
+			<IsSystemGenerated>Yes</IsSystemGenerated>
+			<EnumType>DMFTransferStatus</EnumType>
+		</AxTableField>
+		<AxTableField xmlns="" i:type="AxTableFieldString">
+			<Name>IndirectCostComponentGroup</Name>
+			<AllowEdit>No</AllowEdit>
+			<ExtendedDataType>PSAIndirectComponentGroupId</ExtendedDataType>
+			<IsSystemGenerated>Yes</IsSystemGenerated>
+			<Mandatory>Yes</Mandatory>
+		</AxTableField>
+		<AxTableField xmlns="" i:type="AxTableFieldDate">
+			<Name>FromDate</Name>
+			<AllowEdit>No</AllowEdit>
+			<ExtendedDataType>TransDate</ExtendedDataType>
+			<IsSystemGenerated>Yes</IsSystemGenerated>
+			<Mandatory>Yes</Mandatory>
+		</AxTableField>
+		<AxTableField xmlns="" i:type="AxTableFieldString">
+			<Name>IndirectCostComponent</Name>
+			<AllowEdit>No</AllowEdit>
+			<ExtendedDataType>PSAIndirectComponentId</ExtendedDataType>
+			<IgnoreEDTRelation>Yes</IgnoreEDTRelation>
+			<IsSystemGenerated>Yes</IsSystemGenerated>
+			<Mandatory>Yes</Mandatory>
+		</AxTableField>
+		<AxTableField xmlns="" i:type="AxTableFieldString">
+			<Name>IndirectCostComponentName</Name>
+			<ExtendedDataType>PSAIndirectComponentName</ExtendedDataType>
+			<IsSystemGenerated>Yes</IsSystemGenerated>
+		</AxTableField>
+		<AxTableField xmlns="" i:type="AxTableFieldEnum">
+			<Name>CalculationMethod</Name>
+			<IsSystemGenerated>Yes</IsSystemGenerated>
+			<Label>@PSA2386</Label>
+			<EnumType>PSAIndirectComponentCalcMethod</EnumType>
+		</AxTableField>
+		<AxTableField xmlns="" i:type="AxTableFieldReal">
+			<Name>CostRate</Name>
+			<ExtendedDataType>Price</ExtendedDataType>
+			<IsSystemGenerated>Yes</IsSystemGenerated>
+			<Label>@PSA2382</Label>
+		</AxTableField>
+		<AxTableField xmlns="" i:type="AxTableFieldReal">
+			<Name>RevenueRate</Name>
+			<ExtendedDataType>Price</ExtendedDataType>
+			<IsSystemGenerated>Yes</IsSystemGenerated>
+			<Label>@PSA2383</Label>
+		</AxTableField>
+		<AxTableField xmlns="" i:type="AxTableFieldReal">
+			<Name>InvoiceRate</Name>
+			<ExtendedDataType>Price</ExtendedDataType>
+			<IsSystemGenerated>Yes</IsSystemGenerated>
+			<Label>@PSA2384</Label>
+		</AxTableField>
+	</Fields>
+	<FullTextIndexes />
+	<Indexes>
+		<AxTableIndex>
+			<Name>StagingIdx</Name>
+			<AlternateKey>Yes</AlternateKey>
+			<IsSystemGenerated>Yes</IsSystemGenerated>
+			<Fields>
+				<AxTableIndexField>
+					<DataField>DefinitionGroup</DataField>
+				</AxTableIndexField>
+				<AxTableIndexField>
+					<DataField>ExecutionId</DataField>
+				</AxTableIndexField>
+				<AxTableIndexField>
+					<DataField>IndirectCostComponentGroup</DataField>
+				</AxTableIndexField>
+				<AxTableIndexField>
+					<DataField>IndirectCostComponent</DataField>
+				</AxTableIndexField>
+				<AxTableIndexField>
+					<DataField>FromDate</DataField>
+				</AxTableIndexField>
+			</Fields>
+		</AxTableIndex>
+	</Indexes>
+	<Mappings />
+	<Relations>
+		<AxTableRelation xmlns="" i:type="AxTableRelationForeignKey">
+			<Name>DataEntity</Name>
+			<Cardinality>ExactlyOne</Cardinality>
+			<EntityRelationshipRole>@DMF:StagingToDataEntityRelationshipRole</EntityRelationshipRole>
+			<IsSystemGenerated>Yes</IsSystemGenerated>
+			<RelatedTable>HOGpmaIndirectCostRateEntity</RelatedTable>
+			<RelatedTableCardinality>ZeroOne</RelatedTableCardinality>
+			<RelationshipType>Link</RelationshipType>
+			<Validate>No</Validate>
+			<Constraints>
+				<AxTableRelationConstraint xmlns="" i:type="AxTableRelationConstraintField">
+					<Name>IndirectCostComponentGroup</Name>
+					<Field>IndirectCostComponentGroup</Field>
+					<RelatedField>IndirectCostComponentGroup</RelatedField>
+				</AxTableRelationConstraint>
+				<AxTableRelationConstraint xmlns="" i:type="AxTableRelationConstraintField">
+					<Name>IndirectCostComponent</Name>
+					<Field>IndirectCostComponent</Field>
+					<RelatedField>IndirectCostComponent</RelatedField>
+				</AxTableRelationConstraint>
+				<AxTableRelationConstraint xmlns="" i:type="AxTableRelationConstraintField">
+					<Name>FromDate</Name>
+					<Field>FromDate</Field>
+					<RelatedField>FromDate</RelatedField>
+				</AxTableRelationConstraint>
+			</Constraints>
+		</AxTableRelation>
+	</Relations>
+	<StateMachines />
+</AxTable>

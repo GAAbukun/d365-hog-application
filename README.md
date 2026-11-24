@@ -6,7 +6,7 @@
 | **Package / model** | `HOGApplication`, layer usr, publisher *AlfaPeople Switzerland* |
 | **Why one shared package** | Microsoft: start with few packages (one platform, one application package) and split only for a different release cadence ([Development and continuous delivery FAQ](https://learn.microsoft.com/dynamics365/fin-ops-core/dev-itpro/dev-tools/continuous-delivery-faq)). Decided 23.11.2026. |
 | **Dev environment** | VHD dev VM `dvhd10049vm` (10.0.49) |
-| **Status** | 24.11.2026: `HOGpma` reduced to one matrix without groups (Honegger: keep the customization minimal); xppc 0 errors, xppbp 0 errors / 0 warnings. DB sync and UI test open. The variant with cost center and employment category groups is kept on branch `v2/matrix-with-groups` for other customers. |
+| **Status** | 24.11.2026: `HOGpma` reduced to one matrix without groups (Honegger: keep the customization minimal); xppc 0 errors, xppbp 0 errors / 0 warnings. DB sync and UI test open. Later the same day: data entity for the rates of the standard indirect component groups (Excel import of the 97 rates), builds clean; DB sync and test open. The variant with cost center and employment category groups is kept on branch `v2/matrix-with-groups` for other customers. |
 
 ## Solutions in this package
 
@@ -31,6 +31,9 @@
 | Menu extension | `ProjectManagementAndAccounting.HOGpma` | *Setup › Indirect costs*, after *Indirect cost assignment rules* |
 | Privilege | `HOGpmaIndirectCostMatrixMaintain`, `HOGpmaIndirectCostMatrixView` | Maintain / view the matrix |
 | Duty extension | `ProjProjectMasterMaintain`, `ProjProjectContractMasterMaintain`, `ProjProjectAccountingProcessEnable` (maintain); `ProjProjectMasterInquire` (view) | The same duties that hold the standard indirect cost privileges |
+| Data entity + staging table | `HOGpmaIndirectCostRateEntity` (public name `HOGpmaIndirectCostRate`), `HOGpmaIndirectCostRateStaging` | Import of the standard *Assigned indirect cost components* (`PSAIndirectCompoundingSetup`: group, date, component, calculation method, cost / revenue / invoice rate), for which the standard has no entity. Key: group + component + date. Fills the component name if empty. For a *Percent* line, selects *Base amount* as base of every rate type whose rate isn't 0 (same record as *Compounding rules* in the form), unless the component already has a base for that type. No menu item: *Data management*, Excel add-in, and *Open in Excel* on the standard form |
+| Privilege, duty extension | `HOGpmaIndirectCostRateEntityMaintain`, `HOGpmaIndirectCostRateEntityView` in `ProjProjectJournalsMaintain.HOGpma` | The duty that holds the standard `PSAIndirectComponentGroupEntity` privileges |
+
 ## Elements (`HOGsba`)
 
 | Type | Element | Purpose |
@@ -68,6 +71,8 @@ Get-Service -Name W3SVC, DynamicsAxBatch -ErrorAction SilentlyContinue | Start-S
 | Item | Note |
 |---|---|
 | DB sync, functional test | Sync from Visual Studio. Rebuilds the matrix columns and removes `BenefitEmploymentCategory.HOGpmaEmploymentCategoryGroupId` (test data only). VERIFY whether the sync also drops the three deleted group tables or leaves them orphaned in the database. Then test the matrix form and an hour journal line |
-| **Decision:** employment category key | `BenefitEmploymentCategory` is unique on *employment type (Employee / Contractor) + category*; the matrix stores the category only. Only matters if the same category code exists under both types || Data entity (optional) | Matrix only, for Excel import. Only if Honegger wants it |
+| **Decision:** employment category key | `BenefitEmploymentCategory` is unique on *employment type (Employee / Contractor) + category*; the matrix stores the category only. Only matters if the same category code exists under both types |
+| Test rate entity | DB sync (new staging table), then import a few rows of `Sozialkostengruppen.xlsx` with the Excel add-in; check the lines and *Compounding rules › Cost* in the standard form, and the SVA amount on a posted hour line |
+| Matrix data entity (optional) | The matrix itself has no entity yet. Only if Honegger wants to import it too |
 | Test package `HOGApplicationTest` | SysTest for `HOGpmaIndirectCostMatrixLookup::findGroup` (search order) and the `findAssignment` precedence |
 | `HGExtension` overlap | Honegger's own model isn't on the VM; check whether it wraps `findAssignment` or `postTransLedger` |
