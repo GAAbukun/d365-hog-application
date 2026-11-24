@@ -27,6 +27,7 @@
 | Class (CoC) | `PSAComponentGroupAssignment_HOGpma_Extension` | Wraps `findAssignment`: resource rules → matrix → standard |
 | Class (CoC) | `ProjJournalCheckPost_HOGpma_Extension` | Wraps `postTransLedger`: optional refresh during posting |
 | Form extension | `ProjParameters.HOGpma` | Group *Indirect cost matrix* at the end of the *Journals* tab |
+| Class (form event handler) | `HOGpmaProjParametersFormHandler` | Lookup of the cost center dimension parameter: financial dimensions only (no system-generated dynamic-account dimensions, no main account), same filter as the standard `InventLedgerConflictUIBuilder` |
 | Form + menu item | `HOGpmaIndirectCostMatrix` | The matrix; cost center lookup on the cost center dimension. The **only** new menu item |
 | Menu extension | `ProjectManagementAndAccounting.HOGpma` | *Setup › Indirect costs*, after *Indirect cost assignment rules* |
 | Privilege | `HOGpmaIndirectCostMatrixMaintain`, `HOGpmaIndirectCostMatrixView` | Maintain / view the matrix |

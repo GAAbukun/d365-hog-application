@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>HOGpmaProjParametersFormHandler</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+/// <summary>
+/// Handles the indirect cost matrix fields on the project management and accounting parameters form.
+/// </summary>
+public final class HOGpmaProjParametersFormHandler
+{
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>ProjParameters_OnInitialized</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Registers the lookup of the cost center dimension field.
+    /// </summary>
+    /// <param name = "_sender">The project parameters form.</param>
+    /// <param name = "_e">The event arguments.</param>
+    [FormEventHandler(formStr(ProjParameters), FormEventType::Initialized),
+     SuppressBPWarning('BPParameterNotUsed', 'Signature of the form event handler')]
+    public static void ProjParameters_OnInitialized(xFormRun _sender, FormEventArgs _e)
+    {
+        FormReferenceGroupControl control = _sender.design().controlName(
+            formControlStr(ProjParameters, ProjParameters_HOGpmaCostCenterDimensionAttribute));
+
+        if (control)
+        {
+            control.registerOverrideMethod(
+                methodStr(FormReferenceControl, lookupReference),
+                methodStr(HOGpmaProjParametersFormHandler, lookupCostCenterDimension),
+                new HOGpmaProjParametersFormHandler());
+        }
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>lookupCostCenterDimension</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Looks up the financial dimensions that can hold the cost center.
+    /// </summary>
+    /// <param name = "_control">The cost center dimension control.</param>
+    /// <returns>The selected dimension.</returns>
+    /// <remarks>
+    /// Same filter as the standard <c>InventLedgerConflictUIBuilder.dimensionAttributeLookup</c>:
+    /// no system-generated dimensions for customers, vendors and other dynamic accounts, and no main account.
+    /// </remarks>
+    public Common lookupCostCenterDimension(FormReferenceControl _control)
+    {
+        SysReferenceTableLookup lookup = SysReferenceTableLookup::newParameters(tableNum(DimensionAttribute), _control, true);
+        Query                   query  = new Query();
+        QueryBuildDataSource    qbds   = query.addDataSource(tableNum(DimensionAttribute));
+
+        lookup.addLookupfield(fieldNum(DimensionAttribute, Name));
+
+        qbds.addRange(fieldNum(DimensionAttribute, Type))
+            .value(SysQuery::valueNot(int2Str(enum2int(DimensionAttributeType::DynamicAccount))));
+        qbds.addRange(fieldNum(DimensionAttribute, RecId))
+            .value(SysQuery::valueNot(DimensionAttribute::getWellKnownDimensionAttribute(DimensionAttributeType::MainAccount)));
+
+        lookup.parmQuery(query);
+
+        return lookup.performFormLookup();
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

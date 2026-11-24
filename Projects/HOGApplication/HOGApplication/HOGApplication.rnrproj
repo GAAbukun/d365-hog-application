@@ -38,6 +38,11 @@
       <Name>HOGpmaIndirectCostMatrixLookup</Name>
       <Link>HOGpmaIndirectCostMatrixLookup</Link>
     </Content>
+    <Content Include="AxClass\HOGpmaProjParametersFormHandler">
+      <SubType>Content</SubType>
+      <Name>HOGpmaProjParametersFormHandler</Name>
+      <Link>HOGpmaProjParametersFormHandler</Link>
+    </Content>
     <Content Include="AxClass\HOGsbaSubBillScheduleTableEventHandler">
       <SubType>Content</SubType>
       <Name>HOGsbaSubBillScheduleTableEventHandler</Name>
