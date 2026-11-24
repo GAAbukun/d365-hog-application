@@ -27,8 +27,16 @@ public class HOGpmaIndirectCostMatrix extends FormRun
 								<Source><![CDATA[
             public void lookup(FormControl _formControl, str _filterStr)
             {
-                DimensionValueLookupHelper::lookupDimensionValues(
-                    HOGpmaIndirectCostMatrixLookup::costCenterDimension(), _formControl as FormStringControl);
+                DimensionAttribute costCenterDimension = HOGpmaIndirectCostMatrixLookup::costCenterDimension();
+
+                if (!costCenterDimension.RecId)
+                {
+                    // The standard lookup throws a technical error for an empty dimension.
+                    error("@HOGpma:ErrCostCenterDimensionMissing");
+                    return;
+                }
+
+                DimensionValueLookupHelper::lookupDimensionValues(costCenterDimension, _formControl as FormStringControl);
             }
 
 ]]></Source>
