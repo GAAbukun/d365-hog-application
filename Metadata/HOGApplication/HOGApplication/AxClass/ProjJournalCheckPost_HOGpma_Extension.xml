@@ -53,7 +53,9 @@ final class ProjJournalCheckPost_HOGpma_Extension
     /// </remarks>
     private void hogpmaRefreshIndirectComponentGroup(ProjJournalTrans _projJournalTrans)
     {
-        if (ProjJournalTable::find(_projJournalTrans.JournalId).JournalType != ProjJournalType::Hour
+        ProjJournalTable projJournalTable = _projJournalTrans.projJournalTable();
+
+        if (projJournalTable.JournalType != ProjJournalType::Hour
             || _projJournalTrans.PSAProjOrigTransId)
         {
             return;

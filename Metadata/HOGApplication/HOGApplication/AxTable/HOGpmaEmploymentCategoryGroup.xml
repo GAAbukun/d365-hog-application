@@ -75,7 +75,7 @@ public class HOGpmaEmploymentCategoryGroup extends common
             select firstonly RecId from category
                 where category.HOGpmaEmploymentCategoryGroupId == this.EmploymentCategoryGroupId;
 
-            select crosscompany firstonly RecId from matrix
+            select firstonly crosscompany RecId from matrix
                 where matrix.EmploymentCategoryCode     == TableGroupAll::GroupId
                    && matrix.EmploymentCategoryRelation == this.EmploymentCategoryGroupId;
 

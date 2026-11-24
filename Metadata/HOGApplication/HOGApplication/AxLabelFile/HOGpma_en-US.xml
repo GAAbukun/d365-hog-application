@@ -3,5 +3,6 @@
 	<Name>HOGpma_en-US</Name>
 	<LabelContentFileName>HOGpma.en-US.label.txt</LabelContentFileName>
 	<LabelFileId>HOGpma</LabelFileId>
+	<Language>en-US</Language>
 	<RelativeUriInModelStore>HOGApplication\HOGApplication\AxLabelFile\LabelResources\en-US\HOGpma.en-US.label.txt</RelativeUriInModelStore>
 </AxLabelFile>

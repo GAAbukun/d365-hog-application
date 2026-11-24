@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <BuildTasksDirectory Condition=" '$(BuildTasksDirectory)' == ''">$(MSBuildProgramFiles32)\MSBuild\Microsoft\Dynamics\AX</BuildTasksDirectory>
+    <Model>HOGApplication</Model>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <OutputPath>bin</OutputPath>
+    <SchemaVersion>2.0</SchemaVersion>
+    <GenerateCrossReferences>True</GenerateCrossReferences>
+    <RunAppCheckerRules>False</RunAppCheckerRules>
+    <LogAppcheckerDiagsAsErrors>False</LogAppcheckerDiagsAsErrors>
+    <DeployOnline>False</DeployOnline>
+    <ProjectGuid>{90dffaa2-057c-43ef-a7f2-b43eefd63674}</ProjectGuid>
+    <Name>HOGApplication</Name>
+    <RootNamespace>HOGApplication</RootNamespace>
+    <StartupType>Class</StartupType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <Configuration>Debug</Configuration>
+    <DBSyncInBuild>False</DBSyncInBuild>
+    <GenerateFormAdaptors>False</GenerateFormAdaptors>
+    <Company>
+    </Company>
+    <Partition>initial</Partition>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DataEntityExpandParentChildRelations>False</DataEntityExpandParentChildRelations>
+    <DataEntityUseLabelTextAsFieldName>False</DataEntityUseLabelTextAsFieldName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="AxClass\HOGpmaIndirectCostMatrixLookup">
+      <SubType>Content</SubType>
+      <Name>HOGpmaIndirectCostMatrixLookup</Name>
+      <Link>HOGpmaIndirectCostMatrixLookup</Link>
+    </Content>
+    <Content Include="AxClass\HOGsbaSubBillScheduleTableEventHandler">
+      <SubType>Content</SubType>
+      <Name>HOGsbaSubBillScheduleTableEventHandler</Name>
+      <Link>HOGsbaSubBillScheduleTableEventHandler</Link>
+    </Content>
+    <Content Include="AxClass\ProjJournalCheckPost_HOGpma_Extension">
+      <SubType>Content</SubType>
+      <Name>ProjJournalCheckPost_HOGpma_Extension</Name>
+      <Link>ProjJournalCheckPost_HOGpma_Extension</Link>
+    </Content>
+    <Content Include="AxClass\PSAComponentGroupAssignment_HOGpma_Extension">
+      <SubType>Content</SubType>
+      <Name>PSAComponentGroupAssignment_HOGpma_Extension</Name>
+      <Link>PSAComponentGroupAssignment_HOGpma_Extension</Link>
+    </Content>
+    <Content Include="AxClass\SubBillScheduleLine_HOGsba_Extension">
+      <SubType>Content</SubType>
+      <Name>SubBillScheduleLine_HOGsba_Extension</Name>
+      <Link>SubBillScheduleLine_HOGsba_Extension</Link>
+    </Content>
+    <Content Include="AxEdt\HOGpmaCostCenterCode">
+      <SubType>Content</SubType>
+      <Name>HOGpmaCostCenterCode</Name>
+      <Link>HOGpmaCostCenterCode</Link>
+    </Content>
+    <Content Include="AxEdt\HOGpmaCostCenterDimensionAttribute">
+      <SubType>Content</SubType>
+      <Name>HOGpmaCostCenterDimensionAttribute</Name>
+      <Link>HOGpmaCostCenterDimensionAttribute</Link>
+    </Content>
+    <Content Include="AxEdt\HOGpmaCostCenterGroupId">
+      <SubType>Content</SubType>
+      <Name>HOGpmaCostCenterGroupId</Name>
+      <Link>HOGpmaCostCenterGroupId</Link>
+    </Content>
+    <Content Include="AxEdt\HOGpmaCostCenterRelation">
+      <SubType>Content</SubType>
+      <Name>HOGpmaCostCenterRelation</Name>
+      <Link>HOGpmaCostCenterRelation</Link>
+    </Content>
+    <Content Include="AxEdt\HOGpmaEmploymentCategoryCode">
+      <SubType>Content</SubType>
+      <Name>HOGpmaEmploymentCategoryCode</Name>
+      <Link>HOGpmaEmploymentCategoryCode</Link>
+    </Content>
+    <Content Include="AxEdt\HOGpmaEmploymentCategoryGroupId">
+      <SubType>Content</SubType>
+      <Name>HOGpmaEmploymentCategoryGroupId</Name>
+      <Link>HOGpmaEmploymentCategoryGroupId</Link>
+    </Content>
+    <Content Include="AxEdt\HOGpmaEmploymentCategoryRelation">
+      <SubType>Content</SubType>
+      <Name>HOGpmaEmploymentCategoryRelation</Name>
+      <Link>HOGpmaEmploymentCategoryRelation</Link>
+    </Content>
+    <Content Include="AxEdt\HOGpmaRefreshIndirectGroupOnPosting">
+      <SubType>Content</SubType>
+      <Name>HOGpmaRefreshIndirectGroupOnPosting</Name>
+      <Link>HOGpmaRefreshIndirectGroupOnPosting</Link>
+    </Content>
+    <Content Include="AxFormExtension\ProjParameters.HOGpma">
+      <SubType>Content</SubType>
+      <Name>ProjParameters.HOGpma</Name>
+      <Link>ProjParameters.HOGpma</Link>
+    </Content>
+    <Content Include="AxFormExtension\SubBillScheduleTable.HOGsba">
+      <SubType>Content</SubType>
+      <Name>SubBillScheduleTable.HOGsba</Name>
+      <Link>SubBillScheduleTable.HOGsba</Link>
+    </Content>
+    <Content Include="AxLabelFile\HOGpma_de">
+      <SubType>Content</SubType>
+      <Name>HOGpma_de</Name>
+      <Link>HOGpma_de</Link>
+    </Content>
+    <Content Include="AxLabelFile\HOGpma_en-US">
+      <SubType>Content</SubType>
+      <Name>HOGpma_en-US</Name>
+      <Link>HOGpma_en-US</Link>
+    </Content>
+    <Content Include="AxTable\HOGpmaCostCenterGroup">
+      <SubType>Content</SubType>
+      <Name>HOGpmaCostCenterGroup</Name>
+      <Link>HOGpmaCostCenterGroup</Link>
+    </Content>
+    <Content Include="AxTable\HOGpmaCostCenterGroupMember">
+      <SubType>Content</SubType>
+      <Name>HOGpmaCostCenterGroupMember</Name>
+      <Link>HOGpmaCostCenterGroupMember</Link>
+    </Content>
+    <Content Include="AxTable\HOGpmaEmploymentCategoryGroup">
+      <SubType>Content</SubType>
+      <Name>HOGpmaEmploymentCategoryGroup</Name>
+      <Link>HOGpmaEmploymentCategoryGroup</Link>
+    </Content>
+    <Content Include="AxTable\HOGpmaIndirectCostMatrix">
+      <SubType>Content</SubType>
+      <Name>HOGpmaIndirectCostMatrix</Name>
+      <Link>HOGpmaIndirectCostMatrix</Link>
+    </Content>
+    <Content Include="AxTableExtension\BenefitEmploymentCategory.HOGpma">
+      <SubType>Content</SubType>
+      <Name>BenefitEmploymentCategory.HOGpma</Name>
+      <Link>BenefitEmploymentCategory.HOGpma</Link>
+    </Content>
+    <Content Include="AxTableExtension\ProjParameters.HOGpma">
+      <SubType>Content</SubType>
+      <Name>ProjParameters.HOGpma</Name>
+      <Link>ProjParameters.HOGpma</Link>
+    </Content>
+    <Content Include="AxTableExtension\SubBillSalesLineConsolidated.HOGsba">
+      <SubType>Content</SubType>
+      <Name>SubBillSalesLineConsolidated.HOGsba</Name>
+      <Link>SubBillSalesLineConsolidated.HOGsba</Link>
+    </Content>
+    <Content Include="AxTableExtension\SubBillScheduleLine.HOGsba">
+      <SubType>Content</SubType>
+      <Name>SubBillScheduleLine.HOGsba</Name>
+      <Link>SubBillScheduleLine.HOGsba</Link>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.Common.targets" />
+  <Import Project="$(BuildTasksDirectory)\Microsoft.Dynamics.Framework.Tools.BuildTasks.17.0.targets" />
+</Project>
