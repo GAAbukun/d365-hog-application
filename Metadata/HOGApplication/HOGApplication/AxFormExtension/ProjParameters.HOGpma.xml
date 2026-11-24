@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxFormExtension xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="Microsoft.Dynamics.AX.Metadata.V6">
+	<Name>ProjParameters.HOGpma</Name>
+	<ControlModifications />
+	<Controls>
+		<AxFormExtensionControl xmlns="">
+			<Name>FormExtensionControlHOGpma01</Name>
+			<FormControl xmlns=""
+				i:type="AxFormGroupControl">
+				<Name>HOGpmaIndirectCostMatrix</Name>
+				<Type>Group</Type>
+				<FormControlExtension
+					i:nil="true" />
+				<Controls>
+					<AxFormControl xmlns=""
+						i:type="AxFormCheckBoxControl">
+						<Name>ProjParameters_HOGpmaRefreshIndirectGroupOnPosting</Name>
+						<Type>CheckBox</Type>
+						<FormControlExtension
+							i:nil="true" />
+						<DataField>HOGpmaRefreshIndirectGroupOnPosting</DataField>
+						<DataSource>ProjParameters</DataSource>
+					</AxFormControl>
+					<AxFormControl xmlns=""
+						i:type="AxFormReferenceGroupControl">
+						<Name>ProjParameters_HOGpmaCostCenterDimensionAttribute</Name>
+						<Type>ReferenceGroup</Type>
+						<FormControlExtension
+							i:nil="true" />
+						<Controls />
+						<DataSource>ProjParameters</DataSource>
+						<ReferenceField>HOGpmaCostCenterDimensionAttribute</ReferenceField>
+					</AxFormControl>
+				</Controls>
+				<DataGroup>HOGpmaIndirectCostMatrix</DataGroup>
+				<DataSource>ProjParameters</DataSource>
+			</FormControl>
+			<Parent>JournalBody</Parent>
+			<PositionType>AfterItem</PositionType>
+			<PreviousSibling>AllowAccountingDateUpdate</PreviousSibling>
+		</AxFormExtensionControl>
+	</Controls>
+	<DataSourceModifications />
+	<DataSourceReferences />
+	<DataSources />
+	<Parts />
+	<PropertyModifications />
+</AxFormExtension>

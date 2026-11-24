@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>PSAComponentGroupAssignment_HOGpma_Extension</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+/// <summary>
+/// Applies the indirect cost matrix to the lookup of the indirect component group.
+/// </summary>
+/// <remarks>
+/// Precedence:
+/// 1. A standard assignment rule tied to the line's resource wins.
+/// 2. Otherwise the indirect cost matrix decides (<c>HOGpmaIndirectCostMatrixLookup</c>).
+/// 3. If no matrix line matches, the standard result stays.
+/// The matrix group is written into the buffer that the standard returned (in memory only), so
+/// callers that join on its RecId (<c>ProjPostEmplJournal.projTransCreate</c>) keep working.
+/// </remarks>
+[ExtensionOf(tableStr(PSAComponentGroupAssignment))]
+final class PSAComponentGroupAssignment_HOGpma_Extension
+{
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>findAssignment</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Finds the indirect component group assignment, with the indirect cost matrix applied.
+    /// </summary>
+    /// <param name = "_sProjId">The project ID.</param>
+    /// <param name = "_resource">The resource.</param>
+    /// <param name = "_sCategoryId">The project category ID.</param>
+    /// <param name = "_transDate">The transaction date.</param>
+    /// <param name = "_sCustAccount">The customer account.</param>
+    /// <param name = "_sProjInvoiceProjId">The project contract ID.</param>
+    /// <returns>The assignment record; its group can come from the indirect cost matrix.</returns>
+    public static PSAComponentGroupAssignment findAssignment(
+        ProjId              _sProjId,
+        ResourceRecId       _resource,
+        ProjCategoryId      _sCategoryId,
+        TransDate           _transDate,
+        CustAccount         _sCustAccount,
+        ProjInvoiceProjId   _sProjInvoiceProjId)
+    {
+        PSAComponentGroupAssignment ret = next findAssignment(
+            _sProjId, _resource, _sCategoryId, _transDate, _sCustAccount, _sProjInvoiceProjId);
+
+        if (_resource && !ret.Resource)
+        {
+            // Resource has the lowest weight in PriorityKey, so the standard may have returned a rule
+            // without a resource although a resource rule matches as well.
+            PSAComponentGroupAssignment resourceRule = PSAComponentGroupAssignment::hogpmaFindResourceRule(
+                _sProjId, _resource, _sCategoryId, _transDate, _sCustAccount, _sProjInvoiceProjId);
+
+            if (resourceRule.RecId)
+            {
+                ret = resourceRule;
+            }
+            else
+            {
+                PSAIndirectComponentGroupId groupId = HOGpmaIndirectCostMatrixLookup::findGroupForResource(_resource, _transDate);
+
+                if (groupId)
+                {
+                    ret.IndirectComponentGroup = groupId; // in memory only, never written back
+                }
+            }
+        }
+
+        return ret;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>hogpmaFindResourceRule</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Same search as the standard <c>findAssignment</c>, restricted to rules for the given resource.
+    /// </summary>
+    /// <param name = "_sProjId">The project ID.</param>
+    /// <param name = "_resource">The resource.</param>
+    /// <param name = "_sCategoryId">The project category ID.</param>
+    /// <param name = "_transDate">The transaction date.</param>
+    /// <param name = "_sCustAccount">The customer account.</param>
+    /// <param name = "_sProjInvoiceProjId">The project contract ID.</param>
+    /// <returns>The best matching resource rule, or an empty buffer.</returns>
+    /// <remarks>
+    /// Repeats the standard loop over the parent projects. Compare with
+    /// <c>PSAComponentGroupAssignment::findAssignment</c> after each Microsoft update.
+    /// </remarks>
+    private static PSAComponentGroupAssignment hogpmaFindResourceRule(
+        ProjId              _sProjId,
+        ResourceRecId       _resource,
+        ProjCategoryId      _sCategoryId,
+        TransDate           _transDate,
+        CustAccount         _sCustAccount,
+        ProjInvoiceProjId   _sProjInvoiceProjId)
+    {
+        PSAComponentGroupAssignment assignment;
+        ProjId                      projId              = _sProjId;
+        CustAccount                 custAccount         = _sCustAccount;
+        ProjInvoiceProjId           projInvoiceProjId   = _sProjInvoiceProjId;
+
+        if (projId)
+        {
+            ProjTable projTable = ProjTable::find(projId);
+
+            if (!custAccount)
+            {
+                custAccount = projTable.CustAccount;
+            }
+
+            if (!projInvoiceProjId)
+            {
+                projInvoiceProjId = projTable.ProjInvoiceProjId;
+            }
+        }
+
+        do
+        {
+            select firstonly assignment
+                order by PriorityKey desc, TransDate desc
+                where assignment.Resource == _resource
+                   && (assignment.ProjId            == '' || assignment.ProjId            == projId)
+                   && (assignment.ProjInvoiceProjId == '' || assignment.ProjInvoiceProjId == projInvoiceProjId)
+                   && (assignment.CustAccount       == '' || assignment.CustAccount       == custAccount)
+                   && (assignment.CategoryId        == '' || assignment.CategoryId        == _sCategoryId)
+                   && assignment.TransDate <= _transDate;
+
+            if (!assignment)
+            {
+                projId              = ProjTable::find(projId).ParentId;
+                custAccount         = ProjTable::find(projId).CustAccount;
+                projInvoiceProjId   = ProjTable::find(projId).ProjInvoiceProjId;
+            }
+        }
+        while (!assignment && projId);
+
+        return assignment;
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

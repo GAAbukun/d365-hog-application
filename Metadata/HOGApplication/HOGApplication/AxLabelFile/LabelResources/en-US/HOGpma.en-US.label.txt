@@ -1,0 +1,43 @@
+﻿CostCenterCode=Cost center code
+ ;Table, group or all cost centers
+CostCenterCodeHelp=Select whether the line applies to one cost center, a cost center group or all cost centers.
+CostCenterDimension=Cost center dimension
+ ;Parameter: financial dimension that holds the cost center
+CostCenterDimensionHelp=The financial dimension on the worker's employment that holds the cost center.
+CostCenterGroup=Cost center group
+CostCenterGroupDevDoc=The HOGpmaCostCenterGroup table contains groups of cost centers for the indirect cost matrix.
+ ;{locked} Table developer documentation
+CostCenterGroupMember=Cost center group assignment
+CostCenterGroupMemberDevDoc=The HOGpmaCostCenterGroupMember table assigns a cost center to one cost center group.
+ ;{locked} Table developer documentation
+CostCenterGroups=Cost center groups
+CostCenterRelation=Cost center relation
+ ;Cost center value or cost center group, depending on the cost center code
+CostCenterRelationHelp=The cost center or the cost center group, depending on the cost center code. Empty when the code is All.
+EmploymentCategoryCode=Employment category code
+ ;Table, group or all employment categories
+EmploymentCategoryCodeHelp=Select whether the line applies to one employment category, an employment category group or all employment categories.
+EmploymentCategoryGroup=Employment category group
+EmploymentCategoryGroupDevDoc=The HOGpmaEmploymentCategoryGroup table contains groups of employment categories for the indirect cost matrix.
+ ;{locked} Table developer documentation
+EmploymentCategoryGroups=Employment category groups
+EmploymentCategoryRelation=Employment category relation
+ ;Employment category or employment category group, depending on the employment category code
+EmploymentCategoryRelationHelp=The employment category or the employment category group, depending on the employment category code. Empty when the code is All.
+ErrGroupInUse=Group %1 is used in the indirect cost matrix and can't be deleted.
+ ;%1 = group ID
+ErrRelationNotAllowed=%1 must be empty when %2 is All.
+ ;%1 = relation field label, %2 = code field label
+ErrRelationRequired=Enter a value in %1.
+ ;%1 = relation field label
+ErrValueNotFound=%1 %2 doesn't exist.
+ ;%1 = table label, %2 = value
+IndirectCostMatrix=Indirect cost matrix
+ ;Matrix of employment category and cost center that selects the indirect component group
+IndirectCostMatrixDevDoc=The HOGpmaIndirectCostMatrix table selects the indirect component group of an hour line from the worker's employment category and cost center.
+ ;{locked} Table developer documentation
+InfoGroupChangedOnPosting=Line %1: indirect component group changed from %2 to %3 during posting.
+ ;%1 = journal line number, %2 = old group, %3 = new group
+RefreshOnPosting=Look up indirect component group again when posting
+ ;Parameter checkbox
+RefreshOnPostingHelp=Look up the indirect component group of each hour journal line again when the journal is posted, so that changes to the worker's employment since the line was saved are taken into account.

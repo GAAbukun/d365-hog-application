@@ -1,0 +1,43 @@
+﻿CostCenterCode=Kostenstellencode
+ ;Table, group or all cost centers
+CostCenterCodeHelp=Wählen Sie, ob die Zeile für eine Kostenstelle, eine Kostenstellengruppe oder alle Kostenstellen gilt.
+CostCenterDimension=Kostenstellendimension
+ ;Parameter: financial dimension that holds the cost center
+CostCenterDimensionHelp=Die Finanzdimension der Beschäftigung des Mitarbeiters, die die Kostenstelle enthält.
+CostCenterGroup=Kostenstellengruppe
+CostCenterGroupDevDoc=The HOGpmaCostCenterGroup table contains groups of cost centers for the indirect cost matrix.
+ ;{locked} Table developer documentation
+CostCenterGroupMember=Zuordnung Kostenstellengruppe
+CostCenterGroupMemberDevDoc=The HOGpmaCostCenterGroupMember table assigns a cost center to one cost center group.
+ ;{locked} Table developer documentation
+CostCenterGroups=Kostenstellengruppen
+CostCenterRelation=Kostenstellenrelation
+ ;Cost center value or cost center group, depending on the cost center code
+CostCenterRelationHelp=Die Kostenstelle oder die Kostenstellengruppe, je nach Kostenstellencode. Leer, wenn der Code «Alle» ist.
+EmploymentCategoryCode=Beschäftigungskategoriecode
+ ;Table, group or all employment categories
+EmploymentCategoryCodeHelp=Wählen Sie, ob die Zeile für eine Beschäftigungskategorie, eine Beschäftigungskategoriegruppe oder alle Beschäftigungskategorien gilt.
+EmploymentCategoryGroup=Beschäftigungskategoriegruppe
+EmploymentCategoryGroupDevDoc=The HOGpmaEmploymentCategoryGroup table contains groups of employment categories for the indirect cost matrix.
+ ;{locked} Table developer documentation
+EmploymentCategoryGroups=Beschäftigungskategoriegruppen
+EmploymentCategoryRelation=Beschäftigungskategorierelation
+ ;Employment category or employment category group, depending on the employment category code
+EmploymentCategoryRelationHelp=Die Beschäftigungskategorie oder die Beschäftigungskategoriegruppe, je nach Beschäftigungskategoriecode. Leer, wenn der Code «Alle» ist.
+ErrGroupInUse=Die Gruppe %1 wird in der Matrix für indirekte Kosten verwendet und kann nicht gelöscht werden.
+ ;%1 = group ID
+ErrRelationNotAllowed=%1 muss leer sein, wenn %2 «Alle» ist.
+ ;%1 = relation field label, %2 = code field label
+ErrRelationRequired=Geben Sie einen Wert in %1 ein.
+ ;%1 = relation field label
+ErrValueNotFound=%1 %2 ist nicht vorhanden.
+ ;%1 = table label, %2 = value
+IndirectCostMatrix=Matrix für indirekte Kosten
+ ;Matrix of employment category and cost center that selects the indirect component group
+IndirectCostMatrixDevDoc=The HOGpmaIndirectCostMatrix table selects the indirect component group of an hour line from the worker's employment category and cost center.
+ ;{locked} Table developer documentation
+InfoGroupChangedOnPosting=Zeile %1: Indirekte Komponentengruppe beim Buchen von %2 auf %3 geändert.
+ ;%1 = journal line number, %2 = old group, %3 = new group
+RefreshOnPosting=Indirekte Komponentengruppe beim Buchen neu ermitteln
+ ;Parameter checkbox
+RefreshOnPostingHelp=Ermittelt die indirekte Komponentengruppe jeder Stundenerfassungszeile beim Buchen des Journals erneut, damit Änderungen an der Beschäftigung des Mitarbeiters seit dem Speichern der Zeile berücksichtigt werden.

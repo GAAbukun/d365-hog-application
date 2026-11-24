@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxTableExtension xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>ProjParameters.HOGpma</Name>
+	<FieldGroupExtensions />
+	<FieldGroups>
+		<AxTableFieldGroup>
+			<Name>HOGpmaIndirectCostMatrix</Name>
+			<Label>@HOGpma:IndirectCostMatrix</Label>
+			<Fields>
+				<AxTableFieldGroupField>
+					<DataField>HOGpmaRefreshIndirectGroupOnPosting</DataField>
+				</AxTableFieldGroupField>
+				<AxTableFieldGroupField>
+					<DataField>HOGpmaCostCenterDimensionAttribute</DataField>
+				</AxTableFieldGroupField>
+			</Fields>
+		</AxTableFieldGroup>
+	</FieldGroups>
+	<FieldModifications />
+	<Fields>
+		<AxTableField xmlns=""
+			i:type="AxTableFieldEnum">
+			<Name>HOGpmaRefreshIndirectGroupOnPosting</Name>
+			<AssetClassification>Customer Content</AssetClassification>
+			<ExtendedDataType>HOGpmaRefreshIndirectGroupOnPosting</ExtendedDataType>
+			<EnumType>NoYes</EnumType>
+		</AxTableField>
+		<AxTableField xmlns=""
+			i:type="AxTableFieldInt64">
+			<Name>HOGpmaCostCenterDimensionAttribute</Name>
+			<AssetClassification>Customer Content</AssetClassification>
+			<ExtendedDataType>HOGpmaCostCenterDimensionAttribute</ExtendedDataType>
+		</AxTableField>
+	</Fields>
+	<FullTextIndexes />
+	<Indexes />
+	<Mappings />
+	<PropertyModifications />
+	<RelationExtensions />
+	<RelationModifications />
+	<Relations>
+		<AxTableRelation xmlns=""
+			i:type="AxTableRelationForeignKey">
+			<Name>HOGpmaCostCenterDimensionAttribute</Name>
+			<Cardinality>ZeroMore</Cardinality>
+			<OnDelete>Restricted</OnDelete>
+			<RelatedTable>DimensionAttribute</RelatedTable>
+			<RelatedTableCardinality>ZeroOne</RelatedTableCardinality>
+			<RelatedTableRole>HOGpmaCostCenterDimensionAttribute</RelatedTableRole>
+			<RelationshipType>Association</RelationshipType>
+			<Constraints>
+				<AxTableRelationConstraint xmlns=""
+					i:type="AxTableRelationConstraintField">
+					<Name>HOGpmaCostCenterDimensionAttribute</Name>
+					<Field>HOGpmaCostCenterDimensionAttribute</Field>
+					<RelatedField>RecId</RelatedField>
+				</AxTableRelationConstraint>
+			</Constraints>
+		</AxTableRelation>
+	</Relations>
+</AxTableExtension>

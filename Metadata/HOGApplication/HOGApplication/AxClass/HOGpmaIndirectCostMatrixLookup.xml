@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>HOGpmaIndirectCostMatrixLookup</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+/// <summary>
+/// Finds the indirect component group of an hour line in the indirect cost matrix
+/// (<c>HOGpmaIndirectCostMatrix</c>), from the employment category and the cost center
+/// of the worker's employment in the current legal entity on the transaction date.
+/// </summary>
+/// <remarks>
+/// Search order: employment category Table, Group, All; within each, cost center Table, Group, All.
+/// The All / All line is the fallback. Results are cached per worker, date and legal entity
+/// for the duration of the transaction.
+/// </remarks>
+public final class HOGpmaIndirectCostMatrixLookup
+{
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>findGroupForResource</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Finds the indirect component group for a resource on a date.
+    /// </summary>
+    /// <param name = "_resource">The resource of the hour line.</param>
+    /// <param name = "_transDate">The project transaction date of the hour line.</param>
+    /// <returns>The indirect component group, or an empty string if the resource is not a worker or no matrix line matches.</returns>
+    public static PSAIndirectComponentGroupId findGroupForResource(ResourceRecId _resource, TransDate _transDate)
+    {
+        PSAIndirectComponentGroupId groupId;
+        HcmWorkerRecId              worker = ResourceFacade::getWorker(_resource);
+
+        if (worker)
+        {
+            CompanyInfoRecId    legalEntity = CompanyInfo::current();
+            str                 scope       = HOGpmaIndirectCostMatrixLookup::cacheScope();
+            container           cacheKey    = [worker, _transDate, legalEntity];
+
+            if (SysTransactionScopeCache::isSet(scope, cacheKey))
+            {
+                groupId = SysTransactionScopeCache::get(scope, cacheKey);
+            }
+            else
+            {
+                groupId = HOGpmaIndirectCostMatrixLookup::findGroupForWorker(worker, legalEntity, _transDate);
+                SysTransactionScopeCache::set(scope, cacheKey, groupId);
+            }
+        }
+
+        return groupId;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>findGroupForWorker</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Finds the indirect component group for a worker in a legal entity on a date, without caching.
+    /// </summary>
+    /// <param name = "_worker">The worker.</param>
+    /// <param name = "_legalEntity">The legal entity of the employment.</param>
+    /// <param name = "_transDate">The project transaction date.</param>
+    /// <returns>The indirect component group, or an empty string if no matrix line matches.</returns>
+    /// <remarks>
+    /// The date is converted like the standard indirect cost posting does it for the same table
+    /// (<c>PSAProjPostEmplIndirectJournal</c>: <c>DateTimeUtil::newDateTime(transDate, 0)</c>).
+    /// A worker without employment, employment category or cost center falls through to the All lines.
+    /// </remarks>
+    public static PSAIndirectComponentGroupId findGroupForWorker(
+        HcmWorkerRecId      _worker,
+        CompanyInfoRecId    _legalEntity,
+        TransDate           _transDate)
+    {
+        utcdatetime                 asOf        = DateTimeUtil::newDateTime(_transDate, 0);
+        HcmEmployment               employment  = HcmEmployment::findByWorkerLegalEntity(_worker, _legalEntity, asOf);
+        HcmEmploymentDetail         detail      = HcmEmploymentDetail::findByWorkerLegalEntity(_worker, _legalEntity, asOf);
+        BenefitEmploymentCategory   category;
+
+        if (detail.BenefitEmploymentCategoryRecId)
+        {
+            select firstonly EmploymentCategory, HOGpmaEmploymentCategoryGroupId from category
+                where category.RecId == detail.BenefitEmploymentCategoryRecId;
+        }
+
+        DimensionValue          costCenter      = HOGpmaIndirectCostMatrixLookup::costCenter(employment.DefaultDimension);
+        HOGpmaCostCenterGroupId costCenterGroup = HOGpmaCostCenterGroupMember::find(costCenter).CostCenterGroupId;
+
+        return HOGpmaIndirectCostMatrixLookup::findGroup(
+            category.EmploymentCategory,
+            category.HOGpmaEmploymentCategoryGroupId,
+            costCenter,
+            costCenterGroup,
+            _transDate);
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>findGroup</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Finds the best matching line of the indirect cost matrix.
+    /// </summary>
+    /// <param name = "_employmentCategory">The employment category ID; empty if the worker has none.</param>
+    /// <param name = "_employmentCategoryGroup">The employment category group; empty if none.</param>
+    /// <param name = "_costCenter">The cost center value; empty if none.</param>
+    /// <param name = "_costCenterGroup">The cost center group; empty if none.</param>
+    /// <param name = "_transDate">The project transaction date.</param>
+    /// <returns>The indirect component group of the best matching line, or an empty string.</returns>
+    /// <remarks>
+    /// <c>TableGroupAll</c> has the values Table = 0, GroupId = 1, All = 2, so ascending order
+    /// gives the search order from specific to general. Employment category ranks above cost center.
+    /// Lines with code Table or Group always have a relation (validateWrite), so an empty input
+    /// value can only match the All lines.
+    /// </remarks>
+    public static PSAIndirectComponentGroupId findGroup(
+        BenefitEmploymentCategoryId     _employmentCategory,
+        HOGpmaEmploymentCategoryGroupId _employmentCategoryGroup,
+        DimensionValue                  _costCenter,
+        HOGpmaCostCenterGroupId         _costCenterGroup,
+        TransDate                       _transDate)
+    {
+        HOGpmaIndirectCostMatrix matrix;
+
+        select firstonly IndirectComponentGroup from matrix
+            order by EmploymentCategoryCode asc, CostCenterCode asc, ValidFrom desc
+            where ((matrix.EmploymentCategoryCode == TableGroupAll::Table   && matrix.EmploymentCategoryRelation == _employmentCategory)
+                || (matrix.EmploymentCategoryCode == TableGroupAll::GroupId && matrix.EmploymentCategoryRelation == _employmentCategoryGroup)
+                ||  matrix.EmploymentCategoryCode == TableGroupAll::All)
+               && ((matrix.CostCenterCode == TableGroupAll::Table   && matrix.CostCenterRelation == _costCenter)
+                || (matrix.CostCenterCode == TableGroupAll::GroupId && matrix.CostCenterRelation == _costCenterGroup)
+                ||  matrix.CostCenterCode == TableGroupAll::All)
+               && matrix.ValidFrom <= _transDate;
+
+        return matrix.IndirectComponentGroup;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>costCenter</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Reads the cost center from a default dimension, using the dimension set up in the project parameters.
+    /// </summary>
+    /// <param name = "_defaultDimension">The default dimension of the employment.</param>
+    /// <returns>The cost center value, or an empty string.</returns>
+    private static DimensionValue costCenter(DimensionDefault _defaultDimension)
+    {
+        DimensionValue          costCenter;
+        DimensionAttributeRecId costCenterAttribute = ProjParameters::find().HOGpmaCostCenterDimensionAttribute;
+
+        if (_defaultDimension && costCenterAttribute)
+        {
+            costCenter = DimensionAttributeValueSetStorage::find(_defaultDimension)
+                .getDisplayValueByDimensionAttribute(costCenterAttribute);
+        }
+
+        return costCenter;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>cacheScope</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// The scope of the transaction cache.
+    /// </summary>
+    /// <returns>The cache scope.</returns>
+    private static str cacheScope()
+    {
+        return classStr(HOGpmaIndirectCostMatrixLookup);
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>

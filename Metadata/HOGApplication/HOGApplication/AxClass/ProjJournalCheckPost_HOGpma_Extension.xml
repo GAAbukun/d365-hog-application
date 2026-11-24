@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AxClass xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+	<Name>ProjJournalCheckPost_HOGpma_Extension</Name>
+	<SourceCode>
+		<Declaration><![CDATA[
+/// <summary>
+/// Looks up the indirect component group of each hour journal line again when the journal is posted,
+/// if the project parameter <c>HOGpmaRefreshIndirectGroupOnPosting</c> is set.
+/// </summary>
+[ExtensionOf(classStr(ProjJournalCheckPost))]
+final class ProjJournalCheckPost_HOGpma_Extension
+{
+}
+]]></Declaration>
+		<Methods>
+			<Method>
+				<Name>postTransLedger</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Refreshes the indirect component group of the line before the standard posting uses it.
+    /// </summary>
+    /// <param name = "_journalTransData">The journal line being posted.</param>
+    /// <param name = "_ledgerVoucher">The ledger voucher.</param>
+    /// <remarks>
+    /// The standard posting copies the group to <c>ProjEmplTrans</c> and posts indirect costs only
+    /// if the line has a group, so the refreshed value is used for both.
+    /// </remarks>
+    public void postTransLedger(JournalTransData _journalTransData, LedgerVoucher _ledgerVoucher)
+    {
+        if (ProjParameters::find().HOGpmaRefreshIndirectGroupOnPosting
+            && _journalTransData.journalTrans().TableId == tableNum(ProjJournalTrans))
+        {
+            ProjJournalTrans projJournalTrans = _journalTransData.journalTrans();
+
+            this.hogpmaRefreshIndirectComponentGroup(projJournalTrans);
+        }
+
+        next postTransLedger(_journalTransData, _ledgerVoucher);
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>hogpmaRefreshIndirectComponentGroup</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Looks up the indirect component group of an hour journal line again and stores it on the line.
+    /// </summary>
+    /// <param name = "_projJournalTrans">The journal line; changed in memory and in the database.</param>
+    /// <remarks>
+    /// Same conditions as the standard stamp in <c>ProjJournalTrans.insert</c> and <c>update</c>:
+    /// hour journals only, and not for adjustment lines (<c>PSAProjOrigTransId</c> set).
+    /// </remarks>
+    private void hogpmaRefreshIndirectComponentGroup(ProjJournalTrans _projJournalTrans)
+    {
+        if (ProjJournalTable::find(_projJournalTrans.JournalId).JournalType != ProjJournalType::Hour
+            || _projJournalTrans.PSAProjOrigTransId)
+        {
+            return;
+        }
+
+        PSAIndirectComponentGroupId oldGroup = _projJournalTrans.PSAIndirectComponentGroup;
+
+        _projJournalTrans.setPSAIndirectComponentGroup();
+
+        if (_projJournalTrans.PSAIndirectComponentGroup != oldGroup)
+        {
+            if (_projJournalTrans.RecId)
+            {
+                ProjJournalTrans lineToUpdate;
+
+                lineToUpdate.skipDataMethods(true);
+
+                update_recordset lineToUpdate
+                    setting PSAIndirectComponentGroup = _projJournalTrans.PSAIndirectComponentGroup
+                    where lineToUpdate.RecId == _projJournalTrans.RecId;
+            }
+
+            info(strFmt("@HOGpma:InfoGroupChangedOnPosting",
+                _projJournalTrans.LineNum,
+                oldGroup,
+                _projJournalTrans.PSAIndirectComponentGroup));
+        }
+    }
+
+]]></Source>
+			</Method>
+		</Methods>
+	</SourceCode>
+</AxClass>
