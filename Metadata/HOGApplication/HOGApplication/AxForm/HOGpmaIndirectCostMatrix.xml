@@ -12,94 +12,23 @@ public class HOGpmaIndirectCostMatrix extends FormRun
 }
 ]]></Source>
 			</Method>
-			<Method>
-				<Name>setRelationAccess</Name>
-				<Source><![CDATA[
-    /// <summary>
-    /// Allows editing a relation field only when its code is Table or Group.
-    /// </summary>
-    public void setRelationAccess()
-    {
-        HOGpmaIndirectCostMatrix_ds.object(fieldNum(HOGpmaIndirectCostMatrix, EmploymentCategoryRelation))
-            .allowEdit(HOGpmaIndirectCostMatrix.EmploymentCategoryCode != TableGroupAll::All);
-        HOGpmaIndirectCostMatrix_ds.object(fieldNum(HOGpmaIndirectCostMatrix, CostCenterRelation))
-            .allowEdit(HOGpmaIndirectCostMatrix.CostCenterCode != TableGroupAll::All);
-    }
 
-]]></Source>
-			</Method>
 		</Methods>
 		<DataSources xmlns="">
 			<DataSource>
 				<Name>HOGpmaIndirectCostMatrix</Name>
-				<Methods>
-					<Method>
-						<Name>active</Name>
-						<Source><![CDATA[
-        public int active()
-        {
-            int ret = super();
-
-            element.setRelationAccess();
-
-            return ret;
-        }
-
-]]></Source>
-					</Method>
-				</Methods>
+				<Methods />
 				<Fields>
 					<Field>
-						<DataField>EmploymentCategoryCode</DataField>
-						<Methods>
-							<Method>
-								<Name>modified</Name>
-								<Source><![CDATA[
-            public void modified()
-            {
-                super();
-
-                element.setRelationAccess();
-            }
-
-]]></Source>
-							</Method>
-						</Methods>
-					</Field>
-					<Field>
-						<DataField>CostCenterCode</DataField>
-						<Methods>
-							<Method>
-								<Name>modified</Name>
-								<Source><![CDATA[
-            public void modified()
-            {
-                super();
-
-                element.setRelationAccess();
-            }
-
-]]></Source>
-							</Method>
-						</Methods>
-					</Field>
-					<Field>
-						<DataField>CostCenterRelation</DataField>
+						<DataField>CostCenter</DataField>
 						<Methods>
 							<Method>
 								<Name>lookup</Name>
 								<Source><![CDATA[
             public void lookup(FormControl _formControl, str _filterStr)
             {
-                if (HOGpmaIndirectCostMatrix.CostCenterCode == TableGroupAll::Table)
-                {
-                    DimensionValueLookupHelper::lookupDimensionValues(
-                        HOGpmaIndirectCostMatrixLookup::costCenterDimension(), _formControl as FormStringControl);
-                }
-                else
-                {
-                    super(_formControl, _filterStr);
-                }
+                DimensionValueLookupHelper::lookupDimensionValues(
+                    HOGpmaIndirectCostMatrixLookup::costCenterDimension(), _formControl as FormStringControl);
             }
 
 ]]></Source>
@@ -118,16 +47,10 @@ public class HOGpmaIndirectCostMatrix extends FormRun
 			<Table>HOGpmaIndirectCostMatrix</Table>
 			<Fields>
 				<AxFormDataSourceField>
-					<DataField>EmploymentCategoryCode</DataField>
+					<DataField>EmploymentCategory</DataField>
 				</AxFormDataSourceField>
 				<AxFormDataSourceField>
-					<DataField>EmploymentCategoryRelation</DataField>
-				</AxFormDataSourceField>
-				<AxFormDataSourceField>
-					<DataField>CostCenterCode</DataField>
-				</AxFormDataSourceField>
-				<AxFormDataSourceField>
-					<DataField>CostCenterRelation</DataField>
+					<DataField>CostCenter</DataField>
 				</AxFormDataSourceField>
 				<AxFormDataSourceField>
 					<DataField>ValidFrom</DataField>
@@ -188,7 +111,7 @@ public class HOGpmaIndirectCostMatrix extends FormRun
 								<AxFormControlExtensionProperty>
 									<Name>defaultColumnName</Name>
 									<Type>String</Type>
-									<Value>HOGpmaIndirectCostMatrix_EmploymentCategoryCode</Value>
+									<Value>HOGpmaIndirectCostMatrix_EmploymentCategory</Value>
 								</AxFormControlExtensionProperty>
 							</ExtensionProperties>
 						</FormControlExtension>
@@ -210,24 +133,9 @@ public class HOGpmaIndirectCostMatrix extends FormRun
 					i:nil="true" />
 				<Controls>
 					<AxFormControl xmlns=""
-						i:type="AxFormComboBoxControl">
-						<Name>HOGpmaIndirectCostMatrix_EmploymentCategoryCode</Name>
-						<ElementPosition>306783378</ElementPosition>
-						<FilterExpression>%1</FilterExpression>
-						<HeightMode>Auto</HeightMode>
-						<Type>ComboBox</Type>
-						<VerticalSpacing>-1</VerticalSpacing>
-						<WidthMode>Auto</WidthMode>
-						<FormControlExtension
-							i:nil="true" />
-						<DataField>EmploymentCategoryCode</DataField>
-						<DataSource>HOGpmaIndirectCostMatrix</DataSource>
-						<Items />
-					</AxFormControl>
-					<AxFormControl xmlns=""
 						i:type="AxFormStringControl">
-						<Name>HOGpmaIndirectCostMatrix_EmploymentCategoryRelation</Name>
-						<ElementPosition>613566756</ElementPosition>
+						<Name>HOGpmaIndirectCostMatrix_EmploymentCategory</Name>
+						<ElementPosition>429496729</ElementPosition>
 						<FilterExpression>%1</FilterExpression>
 						<HeightMode>Auto</HeightMode>
 						<Type>String</Type>
@@ -235,28 +143,13 @@ public class HOGpmaIndirectCostMatrix extends FormRun
 						<WidthMode>Auto</WidthMode>
 						<FormControlExtension
 							i:nil="true" />
-						<DataField>EmploymentCategoryRelation</DataField>
+						<DataField>EmploymentCategory</DataField>
 						<DataSource>HOGpmaIndirectCostMatrix</DataSource>
-					</AxFormControl>
-					<AxFormControl xmlns=""
-						i:type="AxFormComboBoxControl">
-						<Name>HOGpmaIndirectCostMatrix_CostCenterCode</Name>
-						<ElementPosition>920350134</ElementPosition>
-						<FilterExpression>%1</FilterExpression>
-						<HeightMode>Auto</HeightMode>
-						<Type>ComboBox</Type>
-						<VerticalSpacing>-1</VerticalSpacing>
-						<WidthMode>Auto</WidthMode>
-						<FormControlExtension
-							i:nil="true" />
-						<DataField>CostCenterCode</DataField>
-						<DataSource>HOGpmaIndirectCostMatrix</DataSource>
-						<Items />
 					</AxFormControl>
 					<AxFormControl xmlns=""
 						i:type="AxFormStringControl">
-						<Name>HOGpmaIndirectCostMatrix_CostCenterRelation</Name>
-						<ElementPosition>1227133512</ElementPosition>
+						<Name>HOGpmaIndirectCostMatrix_CostCenter</Name>
+						<ElementPosition>858993458</ElementPosition>
 						<FilterExpression>%1</FilterExpression>
 						<HeightMode>Auto</HeightMode>
 						<Type>String</Type>
@@ -264,13 +157,13 @@ public class HOGpmaIndirectCostMatrix extends FormRun
 						<WidthMode>Auto</WidthMode>
 						<FormControlExtension
 							i:nil="true" />
-						<DataField>CostCenterRelation</DataField>
+						<DataField>CostCenter</DataField>
 						<DataSource>HOGpmaIndirectCostMatrix</DataSource>
 					</AxFormControl>
 					<AxFormControl xmlns=""
 						i:type="AxFormDateControl">
 						<Name>HOGpmaIndirectCostMatrix_ValidFrom</Name>
-						<ElementPosition>1533916890</ElementPosition>
+						<ElementPosition>1288490187</ElementPosition>
 						<FilterExpression>%1</FilterExpression>
 						<HeightMode>Auto</HeightMode>
 						<Type>Date</Type>
@@ -284,7 +177,7 @@ public class HOGpmaIndirectCostMatrix extends FormRun
 					<AxFormControl xmlns=""
 						i:type="AxFormStringControl">
 						<Name>HOGpmaIndirectCostMatrix_IndirectComponentGroup</Name>
-						<ElementPosition>1840700268</ElementPosition>
+						<ElementPosition>1717986916</ElementPosition>
 						<FilterExpression>%1</FilterExpression>
 						<HeightMode>Auto</HeightMode>
 						<Type>String</Type>

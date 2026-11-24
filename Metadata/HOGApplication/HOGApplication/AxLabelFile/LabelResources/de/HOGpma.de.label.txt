@@ -1,47 +1,14 @@
-﻿CostCenterCode=Kostenstellencode
- ;Table, group or all cost centers
-CostCenterCodeHelp=Wählen Sie, ob die Zeile für eine Kostenstelle, eine Kostenstellengruppe oder alle Kostenstellen gilt.
+﻿CostCenter=Kostenstelle
+ ;Matrix field
 CostCenterDimension=Kostenstellendimension
  ;Parameter: financial dimension that holds the cost center
 CostCenterDimensionHelp=Die Finanzdimension der Beschäftigung des Mitarbeiters, die die Kostenstelle enthält.
-CostCenterGroup=Kostenstellengruppe
-CostCenterGroupDevDoc=The HOGpmaCostCenterGroup table contains groups of cost centers for the indirect cost matrix.
- ;{locked} Table developer documentation
-CostCenterGroupMember=Zuordnung Kostenstellengruppe
-CostCenterGroupMemberDevDoc=The HOGpmaCostCenterGroupMember table assigns a cost center to one cost center group.
- ;{locked} Table developer documentation
-CostCenterGroupMembers=Zuordnungen Kostenstellengruppen
- ;Form caption and menu item
-CostCenterGroupMembersHelp=Ordnen Sie Kostenstellen den Kostenstellengruppen zu.
- ;Menu item help
-CostCenterGroups=Kostenstellengruppen
-CostCenterGroupsHelp=Richten Sie Gruppen von Kostenstellen fÃ¼r die Matrix fÃ¼r indirekte Kosten ein.
- ;Menu item help
-CostCenterRelation=Kostenstellenrelation
- ;Cost center value or cost center group, depending on the cost center code
-CostCenterRelationHelp=Die Kostenstelle oder die Kostenstellengruppe, je nach Kostenstellencode. Leer, wenn der Code «Alle» ist.
-CostCenters=Kostenstellen
- ;Button on cost center groups
-EmploymentCategoryCode=Beschäftigungskategoriecode
- ;Table, group or all employment categories
-EmploymentCategoryCodeHelp=Wählen Sie, ob die Zeile für eine Beschäftigungskategorie, eine Beschäftigungskategoriegruppe oder alle Beschäftigungskategorien gilt.
-EmploymentCategoryGroup=Beschäftigungskategoriegruppe
-EmploymentCategoryGroupDevDoc=The HOGpmaEmploymentCategoryGroup table contains groups of employment categories for the indirect cost matrix.
- ;{locked} Table developer documentation
-EmploymentCategoryGroups=Beschäftigungskategoriegruppen
-EmploymentCategoryGroupsHelp=Richten Sie Gruppen von BeschÃ¤ftigungskategorien fÃ¼r die Matrix fÃ¼r indirekte Kosten ein.
- ;Menu item help
-EmploymentCategoryRelation=Beschäftigungskategorierelation
- ;Employment category or employment category group, depending on the employment category code
-EmploymentCategoryRelationHelp=Die Beschäftigungskategorie oder die Beschäftigungskategoriegruppe, je nach Beschäftigungskategoriecode. Leer, wenn der Code «Alle» ist.
+CostCenterHelp=Die Kostenstelle (Wert der Kostenstellendimension auf der Beschäftigung des Mitarbeiters). Leer lassen für alle Kostenstellen.
+ ;Matrix field help
+EmploymentCategoryHelp=Die Beschäftigungskategorie der Beschäftigung des Mitarbeiters. Leer lassen für alle Beschäftigungskategorien.
+ ;Matrix field help
 ErrCostCenterDimensionMissing=Richten Sie zuerst die Kostenstellendimension in den Parametern für Projektmanagement und -verrechnung ein.
  ;Cost center dimension parameter is empty
-ErrGroupInUse=Die Gruppe %1 wird in der Matrix für indirekte Kosten verwendet und kann nicht gelöscht werden.
- ;%1 = group ID
-ErrRelationNotAllowed=%1 muss leer sein, wenn %2 «Alle» ist.
- ;%1 = relation field label, %2 = code field label
-ErrRelationRequired=Geben Sie einen Wert in %1 ein.
- ;%1 = relation field label
 ErrValueNotFound=%1 %2 ist nicht vorhanden.
  ;%1 = table label, %2 = value
 IndirectCostMatrix=Matrix für indirekte Kosten

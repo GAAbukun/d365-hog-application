@@ -67,7 +67,8 @@ public final class HOGpmaIndirectCostMatrixLookup
     /// <remarks>
     /// The date is converted like the standard indirect cost posting does it for the same table
     /// (<c>PSAProjPostEmplIndirectJournal</c>: <c>DateTimeUtil::newDateTime(transDate, 0)</c>).
-    /// A worker without employment, employment category or cost center falls through to the All lines.
+    /// A worker without employment, employment category or cost center falls through to the lines
+    /// where that field is empty.
     /// </remarks>
     public static PSAIndirectComponentGroupId findGroupForWorker(
         HcmWorkerRecId      _worker,
@@ -81,18 +82,13 @@ public final class HOGpmaIndirectCostMatrixLookup
 
         if (detail.BenefitEmploymentCategoryRecId)
         {
-            select firstonly EmploymentCategory, HOGpmaEmploymentCategoryGroupId from category
+            select firstonly EmploymentCategory from category
                 where category.RecId == detail.BenefitEmploymentCategoryRecId;
         }
 
-        DimensionValue          costCenter      = HOGpmaIndirectCostMatrixLookup::costCenter(employment.DefaultDimension);
-        HOGpmaCostCenterGroupId costCenterGroup = HOGpmaCostCenterGroupMember::find(costCenter).CostCenterGroupId;
-
         return HOGpmaIndirectCostMatrixLookup::findGroup(
             category.EmploymentCategory,
-            category.HOGpmaEmploymentCategoryGroupId,
-            costCenter,
-            costCenterGroup,
+            HOGpmaIndirectCostMatrixLookup::costCenter(employment.DefaultDimension),
             _transDate);
     }
 
@@ -105,34 +101,25 @@ public final class HOGpmaIndirectCostMatrixLookup
     /// Finds the best matching line of the indirect cost matrix.
     /// </summary>
     /// <param name = "_employmentCategory">The employment category ID; empty if the worker has none.</param>
-    /// <param name = "_employmentCategoryGroup">The employment category group; empty if none.</param>
     /// <param name = "_costCenter">The cost center value; empty if none.</param>
-    /// <param name = "_costCenterGroup">The cost center group; empty if none.</param>
     /// <param name = "_transDate">The project transaction date.</param>
     /// <returns>The indirect component group of the best matching line, or an empty string.</returns>
     /// <remarks>
-    /// <c>TableGroupAll</c> has the values Table = 0, GroupId = 1, All = 2, so ascending order
-    /// gives the search order from specific to general. Employment category ranks above cost center.
-    /// Lines with code Table or Group always have a relation (validateWrite), so an empty input
-    /// value can only match the All lines.
+    /// An empty field on a matrix line means all. Sorting descending puts a filled value before an empty
+    /// one, so the search order is: category + cost center, category only, cost center only, neither.
+    /// Employment category ranks above cost center; within a match, the latest valid-from date wins.
     /// </remarks>
     public static PSAIndirectComponentGroupId findGroup(
-        BenefitEmploymentCategoryId     _employmentCategory,
-        HOGpmaEmploymentCategoryGroupId _employmentCategoryGroup,
-        DimensionValue                  _costCenter,
-        HOGpmaCostCenterGroupId         _costCenterGroup,
-        TransDate                       _transDate)
+        BenefitEmploymentCategoryId _employmentCategory,
+        DimensionValue              _costCenter,
+        TransDate                   _transDate)
     {
         HOGpmaIndirectCostMatrix matrix;
 
         select firstonly IndirectComponentGroup from matrix
-            order by EmploymentCategoryCode asc, CostCenterCode asc, ValidFrom desc
-            where ((matrix.EmploymentCategoryCode == TableGroupAll::Table   && matrix.EmploymentCategoryRelation == _employmentCategory)
-                || (matrix.EmploymentCategoryCode == TableGroupAll::GroupId && matrix.EmploymentCategoryRelation == _employmentCategoryGroup)
-                ||  matrix.EmploymentCategoryCode == TableGroupAll::All)
-               && ((matrix.CostCenterCode == TableGroupAll::Table   && matrix.CostCenterRelation == _costCenter)
-                || (matrix.CostCenterCode == TableGroupAll::GroupId && matrix.CostCenterRelation == _costCenterGroup)
-                ||  matrix.CostCenterCode == TableGroupAll::All)
+            order by EmploymentCategory desc, CostCenter desc, ValidFrom desc
+            where (matrix.EmploymentCategory == _employmentCategory || matrix.EmploymentCategory == '')
+               && (matrix.CostCenter         == _costCenter         || matrix.CostCenter         == '')
                && matrix.ValidFrom <= _transDate;
 
         return matrix.IndirectComponentGroup;

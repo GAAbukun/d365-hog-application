@@ -7,40 +7,9 @@
 			<Parent>IndirectComponent</Parent>
 			<PositionType>AfterItem</PositionType>
 			<PreviousSibling>PSAComponentGroupAssignment</PreviousSibling>
-			<MenuElement xmlns=""
-				i:type="AxMenuElementMenuItem">
+			<MenuElement xmlns="" i:type="AxMenuElementMenuItem">
 				<Name>HOGpmaIndirectCostMatrix</Name>
 				<MenuItemName>HOGpmaIndirectCostMatrix</MenuItemName>
-			</MenuElement>
-		</AxMenuExtensionElement>
-		<AxMenuExtensionElement xmlns="">
-			<Parent>IndirectComponent</Parent>
-			<PositionType>AfterItem</PositionType>
-			<PreviousSibling>HOGpmaIndirectCostMatrix</PreviousSibling>
-			<MenuElement xmlns=""
-				i:type="AxMenuElementMenuItem">
-				<Name>HOGpmaCostCenterGroup</Name>
-				<MenuItemName>HOGpmaCostCenterGroup</MenuItemName>
-			</MenuElement>
-		</AxMenuExtensionElement>
-		<AxMenuExtensionElement xmlns="">
-			<Parent>IndirectComponent</Parent>
-			<PositionType>AfterItem</PositionType>
-			<PreviousSibling>HOGpmaCostCenterGroup</PreviousSibling>
-			<MenuElement xmlns=""
-				i:type="AxMenuElementMenuItem">
-				<Name>HOGpmaCostCenterGroupMember</Name>
-				<MenuItemName>HOGpmaCostCenterGroupMember</MenuItemName>
-			</MenuElement>
-		</AxMenuExtensionElement>
-		<AxMenuExtensionElement xmlns="">
-			<Parent>IndirectComponent</Parent>
-			<PositionType>AfterItem</PositionType>
-			<PreviousSibling>HOGpmaCostCenterGroupMember</PreviousSibling>
-			<MenuElement xmlns=""
-				i:type="AxMenuElementMenuItem">
-				<Name>HOGpmaEmploymentCategoryGroup</Name>
-				<MenuItemName>HOGpmaEmploymentCategoryGroup</MenuItemName>
 			</MenuElement>
 		</AxMenuExtensionElement>
 	</Elements>

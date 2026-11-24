@@ -14,33 +14,6 @@
 			<ObjectType>MenuItemDisplay</ObjectType>
 			<Forms />
 		</AxSecurityEntryPointReference>
-		<AxSecurityEntryPointReference>
-			<Name>HOGpmaCostCenterGroup</Name>
-			<Grant>
-				<Read>Allow</Read>
-			</Grant>
-			<ObjectName>HOGPMACOSTCENTERGROUP</ObjectName>
-			<ObjectType>MenuItemDisplay</ObjectType>
-			<Forms />
-		</AxSecurityEntryPointReference>
-		<AxSecurityEntryPointReference>
-			<Name>HOGpmaCostCenterGroupMember</Name>
-			<Grant>
-				<Read>Allow</Read>
-			</Grant>
-			<ObjectName>HOGPMACOSTCENTERGROUPMEMBER</ObjectName>
-			<ObjectType>MenuItemDisplay</ObjectType>
-			<Forms />
-		</AxSecurityEntryPointReference>
-		<AxSecurityEntryPointReference>
-			<Name>HOGpmaEmploymentCategoryGroup</Name>
-			<Grant>
-				<Read>Allow</Read>
-			</Grant>
-			<ObjectName>HOGPMAEMPLOYMENTCATEGORYGROUP</ObjectName>
-			<ObjectType>MenuItemDisplay</ObjectType>
-			<Forms />
-		</AxSecurityEntryPointReference>
 	</EntryPoints>
 	<FormControlOverrides />
 </AxSecurityPrivilege>

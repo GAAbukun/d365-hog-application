@@ -58,70 +58,20 @@
       <Name>SubBillScheduleLine_HOGsba_Extension</Name>
       <Link>SubBillScheduleLine_HOGsba_Extension</Link>
     </Content>
-    <Content Include="AxEdt\HOGpmaCostCenterCode">
-      <SubType>Content</SubType>
-      <Name>HOGpmaCostCenterCode</Name>
-      <Link>HOGpmaCostCenterCode</Link>
-    </Content>
     <Content Include="AxEdt\HOGpmaCostCenterDimensionAttribute">
       <SubType>Content</SubType>
       <Name>HOGpmaCostCenterDimensionAttribute</Name>
       <Link>HOGpmaCostCenterDimensionAttribute</Link>
-    </Content>
-    <Content Include="AxEdt\HOGpmaCostCenterGroupId">
-      <SubType>Content</SubType>
-      <Name>HOGpmaCostCenterGroupId</Name>
-      <Link>HOGpmaCostCenterGroupId</Link>
-    </Content>
-    <Content Include="AxEdt\HOGpmaCostCenterRelation">
-      <SubType>Content</SubType>
-      <Name>HOGpmaCostCenterRelation</Name>
-      <Link>HOGpmaCostCenterRelation</Link>
-    </Content>
-    <Content Include="AxEdt\HOGpmaEmploymentCategoryCode">
-      <SubType>Content</SubType>
-      <Name>HOGpmaEmploymentCategoryCode</Name>
-      <Link>HOGpmaEmploymentCategoryCode</Link>
-    </Content>
-    <Content Include="AxEdt\HOGpmaEmploymentCategoryGroupId">
-      <SubType>Content</SubType>
-      <Name>HOGpmaEmploymentCategoryGroupId</Name>
-      <Link>HOGpmaEmploymentCategoryGroupId</Link>
-    </Content>
-    <Content Include="AxEdt\HOGpmaEmploymentCategoryRelation">
-      <SubType>Content</SubType>
-      <Name>HOGpmaEmploymentCategoryRelation</Name>
-      <Link>HOGpmaEmploymentCategoryRelation</Link>
     </Content>
     <Content Include="AxEdt\HOGpmaRefreshIndirectGroupOnPosting">
       <SubType>Content</SubType>
       <Name>HOGpmaRefreshIndirectGroupOnPosting</Name>
       <Link>HOGpmaRefreshIndirectGroupOnPosting</Link>
     </Content>
-    <Content Include="AxForm\HOGpmaCostCenterGroup">
-      <SubType>Content</SubType>
-      <Name>HOGpmaCostCenterGroup</Name>
-      <Link>HOGpmaCostCenterGroup</Link>
-    </Content>
-    <Content Include="AxForm\HOGpmaCostCenterGroupMember">
-      <SubType>Content</SubType>
-      <Name>HOGpmaCostCenterGroupMember</Name>
-      <Link>HOGpmaCostCenterGroupMember</Link>
-    </Content>
-    <Content Include="AxForm\HOGpmaEmploymentCategoryGroup">
-      <SubType>Content</SubType>
-      <Name>HOGpmaEmploymentCategoryGroup</Name>
-      <Link>HOGpmaEmploymentCategoryGroup</Link>
-    </Content>
     <Content Include="AxForm\HOGpmaIndirectCostMatrix">
       <SubType>Content</SubType>
       <Name>HOGpmaIndirectCostMatrix</Name>
       <Link>HOGpmaIndirectCostMatrix</Link>
-    </Content>
-    <Content Include="AxFormExtension\BenefitEmploymentCategory.HOGpma">
-      <SubType>Content</SubType>
-      <Name>BenefitEmploymentCategory.HOGpma</Name>
-      <Link>BenefitEmploymentCategory.HOGpma</Link>
     </Content>
     <Content Include="AxFormExtension\ProjParameters.HOGpma">
       <SubType>Content</SubType>
@@ -147,21 +97,6 @@
       <SubType>Content</SubType>
       <Name>ProjectManagementAndAccounting.HOGpma</Name>
       <Link>ProjectManagementAndAccounting.HOGpma</Link>
-    </Content>
-    <Content Include="AxMenuItemDisplay\HOGpmaCostCenterGroup">
-      <SubType>Content</SubType>
-      <Name>HOGpmaCostCenterGroup</Name>
-      <Link>HOGpmaCostCenterGroup</Link>
-    </Content>
-    <Content Include="AxMenuItemDisplay\HOGpmaCostCenterGroupMember">
-      <SubType>Content</SubType>
-      <Name>HOGpmaCostCenterGroupMember</Name>
-      <Link>HOGpmaCostCenterGroupMember</Link>
-    </Content>
-    <Content Include="AxMenuItemDisplay\HOGpmaEmploymentCategoryGroup">
-      <SubType>Content</SubType>
-      <Name>HOGpmaEmploymentCategoryGroup</Name>
-      <Link>HOGpmaEmploymentCategoryGroup</Link>
     </Content>
     <Content Include="AxMenuItemDisplay\HOGpmaIndirectCostMatrix">
       <SubType>Content</SubType>
@@ -198,30 +133,10 @@
       <Name>HOGpmaIndirectCostMatrixView</Name>
       <Link>HOGpmaIndirectCostMatrixView</Link>
     </Content>
-    <Content Include="AxTable\HOGpmaCostCenterGroup">
-      <SubType>Content</SubType>
-      <Name>HOGpmaCostCenterGroup</Name>
-      <Link>HOGpmaCostCenterGroup</Link>
-    </Content>
-    <Content Include="AxTable\HOGpmaCostCenterGroupMember">
-      <SubType>Content</SubType>
-      <Name>HOGpmaCostCenterGroupMember</Name>
-      <Link>HOGpmaCostCenterGroupMember</Link>
-    </Content>
-    <Content Include="AxTable\HOGpmaEmploymentCategoryGroup">
-      <SubType>Content</SubType>
-      <Name>HOGpmaEmploymentCategoryGroup</Name>
-      <Link>HOGpmaEmploymentCategoryGroup</Link>
-    </Content>
     <Content Include="AxTable\HOGpmaIndirectCostMatrix">
       <SubType>Content</SubType>
       <Name>HOGpmaIndirectCostMatrix</Name>
       <Link>HOGpmaIndirectCostMatrix</Link>
-    </Content>
-    <Content Include="AxTableExtension\BenefitEmploymentCategory.HOGpma">
-      <SubType>Content</SubType>
-      <Name>BenefitEmploymentCategory.HOGpma</Name>
-      <Link>BenefitEmploymentCategory.HOGpma</Link>
     </Content>
     <Content Include="AxTableExtension\ProjParameters.HOGpma">
       <SubType>Content</SubType>

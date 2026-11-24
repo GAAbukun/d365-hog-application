@@ -5,8 +5,9 @@
 		<Declaration><![CDATA[
 /// <summary>
 /// Indirect cost matrix: selects the indirect component group of an hour line
-/// from the worker's employment category and cost center (Table / Group / All on each axis).
-/// The All / All line is the fallback (e.g. group CC).
+/// from the worker's employment category and cost center.
+/// An empty employment category or cost center applies to all, as in the standard
+/// indirect cost assignment rules (<c>PSAComponentGroupAssignment</c>).
 /// </summary>
 public class HOGpmaIndirectCostMatrix extends common
 {
@@ -14,151 +15,32 @@ public class HOGpmaIndirectCostMatrix extends common
 ]]></Declaration>
 		<Methods>
 			<Method>
-				<Name>modifiedField</Name>
-				<Source><![CDATA[
-    /// <summary>
-    /// Clears the relation when its code changes.
-    /// </summary>
-    /// <param name = "_fieldId">The ID of the modified field.</param>
-    public void modifiedField(FieldId _fieldId)
-    {
-        super(_fieldId);
-
-        switch (_fieldId)
-        {
-            case fieldNum(HOGpmaIndirectCostMatrix, EmploymentCategoryCode):
-                this.EmploymentCategoryRelation = '';
-                break;
-
-            case fieldNum(HOGpmaIndirectCostMatrix, CostCenterCode):
-                this.CostCenterRelation = '';
-                break;
-        }
-    }
-
-]]></Source>
-			</Method>
-			<Method>
 				<Name>validateWrite</Name>
 				<Source><![CDATA[
     /// <summary>
-    /// Validates the code and relation of both axes.
+    /// Checks that the employment category exists and that the cost center is a value of the cost center dimension.
     /// </summary>
     /// <returns>true if the record is valid; otherwise, false.</returns>
     public boolean validateWrite()
     {
-        boolean ret = super();
-
-        ret = this.checkRelation(
-                this.EmploymentCategoryCode,
-                this.EmploymentCategoryRelation,
-                fieldNum(HOGpmaIndirectCostMatrix, EmploymentCategoryCode),
-                fieldNum(HOGpmaIndirectCostMatrix, EmploymentCategoryRelation)) && ret;
-
-        ret = this.checkRelation(
-                this.CostCenterCode,
-                this.CostCenterRelation,
-                fieldNum(HOGpmaIndirectCostMatrix, CostCenterCode),
-                fieldNum(HOGpmaIndirectCostMatrix, CostCenterRelation)) && ret;
-
-        if (ret)
-        {
-            ret = this.checkRelationExists();
-        }
-
-        return ret;
-    }
-
-]]></Source>
-			</Method>
-			<Method>
-				<Name>checkRelation</Name>
-				<Source><![CDATA[
-    /// <summary>
-    /// Checks that the relation is filled for Table and Group, and empty for All.
-    /// </summary>
-    /// <param name = "_code">The code of the axis.</param>
-    /// <param name = "_relation">The relation of the axis.</param>
-    /// <param name = "_codeFieldId">The field ID of the code.</param>
-    /// <param name = "_relationFieldId">The field ID of the relation.</param>
-    /// <returns>true if the combination is valid; otherwise, false.</returns>
-    private boolean checkRelation(
-        TableGroupAll   _code,
-        str             _relation,
-        FieldId         _codeFieldId,
-        FieldId         _relationFieldId)
-    {
-        boolean ret = true;
-        str     relationLabel = fieldId2PName(tableNum(HOGpmaIndirectCostMatrix), _relationFieldId);
-
-        if (_code == TableGroupAll::All)
-        {
-            if (_relation)
-            {
-                ret = checkFailed(strFmt("@HOGpma:ErrRelationNotAllowed",
-                    relationLabel,
-                    fieldId2PName(tableNum(HOGpmaIndirectCostMatrix), _codeFieldId)));
-            }
-        }
-        else if (!_relation)
-        {
-            ret = checkFailed(strFmt("@HOGpma:ErrRelationRequired", relationLabel));
-        }
-
-        return ret;
-    }
-
-]]></Source>
-			</Method>
-			<Method>
-				<Name>checkRelationExists</Name>
-				<Source><![CDATA[
-    /// <summary>
-    /// Checks that the employment category, the employment category group and the cost center group exist.
-    /// </summary>
-    /// <returns>true if all referenced records exist; otherwise, false.</returns>
-    /// <remarks>
-    /// A cost center on the Table level is checked against the values of the cost center dimension
-    /// set up in <c>ProjParameters.HOGpmaCostCenterDimensionAttribute</c>.
-    /// </remarks>
-    private boolean checkRelationExists()
-    {
-        boolean                     ret = true;
+        boolean                     ret = super();
         BenefitEmploymentCategory   category;
 
-        switch (this.EmploymentCategoryCode)
+        if (this.EmploymentCategory)
         {
-            case TableGroupAll::Table:
-                select firstonly RecId from category
-                    where category.EmploymentCategory == this.EmploymentCategoryRelation;
+            select firstonly RecId from category
+                where category.EmploymentCategory == this.EmploymentCategory;
 
-                if (!category.RecId)
-                {
-                    ret = checkFailed(strFmt("@HOGpma:ErrValueNotFound",
-                        tableId2PName(tableNum(BenefitEmploymentCategory)), this.EmploymentCategoryRelation));
-                }
-                break;
-
-            case TableGroupAll::GroupId:
-                if (!HOGpmaEmploymentCategoryGroup::exist(this.EmploymentCategoryRelation))
-                {
-                    ret = checkFailed(strFmt("@HOGpma:ErrValueNotFound",
-                        tableId2PName(tableNum(HOGpmaEmploymentCategoryGroup)), this.EmploymentCategoryRelation));
-                }
-                break;
+            if (!category.RecId)
+            {
+                ret = checkFailed(strFmt("@HOGpma:ErrValueNotFound",
+                    tableId2PName(tableNum(BenefitEmploymentCategory)), this.EmploymentCategory));
+            }
         }
 
-        if (this.CostCenterCode == TableGroupAll::Table
-            && !HOGpmaIndirectCostMatrixLookup::checkCostCenter(this.CostCenterRelation))
+        if (this.CostCenter && !HOGpmaIndirectCostMatrixLookup::checkCostCenter(this.CostCenter))
         {
             ret = false;
-        }
-
-        if (this.CostCenterCode == TableGroupAll::GroupId
-            && !HOGpmaCostCenterGroup::exist(this.CostCenterRelation))
-        {
-            ret = checkFailed(strFmt("@HOGpma:ErrValueNotFound",
-                tableId2PName(tableNum(HOGpmaCostCenterGroup)), this.CostCenterRelation));
         }
 
         return ret;
@@ -186,16 +68,10 @@ public class HOGpmaIndirectCostMatrix extends common
 			<Name>AutoReport</Name>
 			<Fields>
 				<AxTableFieldGroupField>
-					<DataField>EmploymentCategoryCode</DataField>
+					<DataField>EmploymentCategory</DataField>
 				</AxTableFieldGroupField>
 				<AxTableFieldGroupField>
-					<DataField>EmploymentCategoryRelation</DataField>
-				</AxTableFieldGroupField>
-				<AxTableFieldGroupField>
-					<DataField>CostCenterCode</DataField>
-				</AxTableFieldGroupField>
-				<AxTableFieldGroupField>
-					<DataField>CostCenterRelation</DataField>
+					<DataField>CostCenter</DataField>
 				</AxTableFieldGroupField>
 				<AxTableFieldGroupField>
 					<DataField>ValidFrom</DataField>
@@ -227,16 +103,10 @@ public class HOGpmaIndirectCostMatrix extends common
 			<Label>@SYS9039</Label>
 			<Fields>
 				<AxTableFieldGroupField>
-					<DataField>EmploymentCategoryCode</DataField>
+					<DataField>EmploymentCategory</DataField>
 				</AxTableFieldGroupField>
 				<AxTableFieldGroupField>
-					<DataField>EmploymentCategoryRelation</DataField>
-				</AxTableFieldGroupField>
-				<AxTableFieldGroupField>
-					<DataField>CostCenterCode</DataField>
-				</AxTableFieldGroupField>
-				<AxTableFieldGroupField>
-					<DataField>CostCenterRelation</DataField>
+					<DataField>CostCenter</DataField>
 				</AxTableFieldGroupField>
 				<AxTableFieldGroupField>
 					<DataField>ValidFrom</DataField>
@@ -248,27 +118,19 @@ public class HOGpmaIndirectCostMatrix extends common
 		</AxTableFieldGroup>
 	</FieldGroups>
 	<Fields>
-		<AxTableField xmlns="" i:type="AxTableFieldEnum">
-			<Name>EmploymentCategoryCode</Name>
+		<AxTableField xmlns="" i:type="AxTableFieldString">
+			<Name>EmploymentCategory</Name>
 			<AssetClassification>Customer Content</AssetClassification>
-			<ExtendedDataType>HOGpmaEmploymentCategoryCode</ExtendedDataType>
-			<EnumType>TableGroupAll</EnumType>
+			<ExtendedDataType>BenefitEmploymentCategoryId</ExtendedDataType>
+			<HelpText>@HOGpma:EmploymentCategoryHelp</HelpText>
+			<IgnoreEDTRelation>Yes</IgnoreEDTRelation>
 		</AxTableField>
 		<AxTableField xmlns="" i:type="AxTableFieldString">
-			<Name>EmploymentCategoryRelation</Name>
+			<Name>CostCenter</Name>
 			<AssetClassification>Customer Content</AssetClassification>
-			<ExtendedDataType>HOGpmaEmploymentCategoryRelation</ExtendedDataType>
-		</AxTableField>
-		<AxTableField xmlns="" i:type="AxTableFieldEnum">
-			<Name>CostCenterCode</Name>
-			<AssetClassification>Customer Content</AssetClassification>
-			<ExtendedDataType>HOGpmaCostCenterCode</ExtendedDataType>
-			<EnumType>TableGroupAll</EnumType>
-		</AxTableField>
-		<AxTableField xmlns="" i:type="AxTableFieldString">
-			<Name>CostCenterRelation</Name>
-			<AssetClassification>Customer Content</AssetClassification>
-			<ExtendedDataType>HOGpmaCostCenterRelation</ExtendedDataType>
+			<ExtendedDataType>DimensionValue</ExtendedDataType>
+			<HelpText>@HOGpma:CostCenterHelp</HelpText>
+			<Label>@HOGpma:CostCenter</Label>
 		</AxTableField>
 		<AxTableField xmlns="" i:type="AxTableFieldDate">
 			<Name>ValidFrom</Name>
@@ -290,16 +152,10 @@ public class HOGpmaIndirectCostMatrix extends common
 			<AlternateKey>Yes</AlternateKey>
 			<Fields>
 				<AxTableIndexField>
-					<DataField>EmploymentCategoryCode</DataField>
+					<DataField>EmploymentCategory</DataField>
 				</AxTableIndexField>
 				<AxTableIndexField>
-					<DataField>EmploymentCategoryRelation</DataField>
-				</AxTableIndexField>
-				<AxTableIndexField>
-					<DataField>CostCenterCode</DataField>
-				</AxTableIndexField>
-				<AxTableIndexField>
-					<DataField>CostCenterRelation</DataField>
+					<DataField>CostCenter</DataField>
 				</AxTableIndexField>
 				<AxTableIndexField>
 					<DataField>ValidFrom</DataField>
@@ -340,53 +196,10 @@ public class HOGpmaIndirectCostMatrix extends common
 			<RelatedTableCardinality>ZeroOne</RelatedTableCardinality>
 			<RelationshipType>Association</RelationshipType>
 			<Constraints>
-				<AxTableRelationConstraint xmlns="" i:type="AxTableRelationConstraintFixed">
-					<Name>EmploymentCategoryCode</Name>
-					<Field>EmploymentCategoryCode</Field>
-					<ValueStr>TableGroupAll::Table</ValueStr>
-				</AxTableRelationConstraint>
 				<AxTableRelationConstraint xmlns="" i:type="AxTableRelationConstraintField">
-					<Name>EmploymentCategoryRelation</Name>
-					<Field>EmploymentCategoryRelation</Field>
+					<Name>EmploymentCategory</Name>
+					<Field>EmploymentCategory</Field>
 					<RelatedField>EmploymentCategory</RelatedField>
-				</AxTableRelationConstraint>
-			</Constraints>
-		</AxTableRelation>
-		<AxTableRelation>
-			<Name>HOGpmaEmploymentCategoryGroup</Name>
-			<Cardinality>ZeroMore</Cardinality>
-			<RelatedTable>HOGpmaEmploymentCategoryGroup</RelatedTable>
-			<RelatedTableCardinality>ZeroOne</RelatedTableCardinality>
-			<RelationshipType>Association</RelationshipType>
-			<Constraints>
-				<AxTableRelationConstraint xmlns="" i:type="AxTableRelationConstraintFixed">
-					<Name>EmploymentCategoryCode</Name>
-					<Field>EmploymentCategoryCode</Field>
-					<ValueStr>TableGroupAll::GroupId</ValueStr>
-				</AxTableRelationConstraint>
-				<AxTableRelationConstraint xmlns="" i:type="AxTableRelationConstraintField">
-					<Name>EmploymentCategoryRelation</Name>
-					<Field>EmploymentCategoryRelation</Field>
-					<RelatedField>EmploymentCategoryGroupId</RelatedField>
-				</AxTableRelationConstraint>
-			</Constraints>
-		</AxTableRelation>
-		<AxTableRelation>
-			<Name>HOGpmaCostCenterGroup</Name>
-			<Cardinality>ZeroMore</Cardinality>
-			<RelatedTable>HOGpmaCostCenterGroup</RelatedTable>
-			<RelatedTableCardinality>ZeroOne</RelatedTableCardinality>
-			<RelationshipType>Association</RelationshipType>
-			<Constraints>
-				<AxTableRelationConstraint xmlns="" i:type="AxTableRelationConstraintFixed">
-					<Name>CostCenterCode</Name>
-					<Field>CostCenterCode</Field>
-					<ValueStr>TableGroupAll::GroupId</ValueStr>
-				</AxTableRelationConstraint>
-				<AxTableRelationConstraint xmlns="" i:type="AxTableRelationConstraintField">
-					<Name>CostCenterRelation</Name>
-					<Field>CostCenterRelation</Field>
-					<RelatedField>CostCenterGroupId</RelatedField>
 				</AxTableRelationConstraint>
 			</Constraints>
 		</AxTableRelation>
