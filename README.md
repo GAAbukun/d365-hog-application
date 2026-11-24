@@ -67,7 +67,7 @@ Get-Service -Name W3SVC, DynamicsAxBatch -ErrorAction SilentlyContinue | Start-S
 
 | Item | Note |
 |---|---|
-| DB sync, functional test | Sync from Visual Studio. Drops the group tables, the matrix code/relation columns and `BenefitEmploymentCategory.HOGpmaEmploymentCategoryGroupId` (test data only). Then test the matrix form and an hour journal line |
+| DB sync, functional test | Sync from Visual Studio. Rebuilds the matrix columns and removes `BenefitEmploymentCategory.HOGpmaEmploymentCategoryGroupId` (test data only). VERIFY whether the sync also drops the three deleted group tables or leaves them orphaned in the database. Then test the matrix form and an hour journal line |
 | **Decision:** employment category key | `BenefitEmploymentCategory` is unique on *employment type (Employee / Contractor) + category*; the matrix stores the category only. Only matters if the same category code exists under both types || Data entity (optional) | Matrix only, for Excel import. Only if Honegger wants it |
 | Test package `HOGApplicationTest` | SysTest for `HOGpmaIndirectCostMatrixLookup::findGroup` (search order) and the `findAssignment` precedence |
 | `HGExtension` overlap | Honegger's own model isn't on the VM; check whether it wraps `findAssignment` or `postTransLedger` |
